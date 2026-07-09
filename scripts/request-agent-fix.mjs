@@ -15,8 +15,44 @@ if (!apiUrl) {
   throw new Error('AGENT_API_URL secret is required');
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function requestWithRetry(url, options, retries = 4) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= retries; attempt += 1) {
+    try {
+      const response = await fetch(url, options);
+      if (response.ok) {
+        return response;
+      }
+
+      const text = await response.text();
+      const retryableStatus = response.status === 408 || response.status === 429 || response.status >= 500;
+      if (!retryableStatus || attempt === retries) {
+        throw new Error(`Agent API request failed: ${response.status} ${text}`);
+      }
+
+      lastError = new Error(`Attempt ${attempt}/${retries} failed: ${response.status} ${text}`);
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      if (attempt === retries) {
+        throw lastError;
+      }
+    }
+
+    const delayMs = attempt * 3000;
+    console.warn(`Agent API attempt ${attempt} failed, retrying in ${delayMs}ms...`);
+    await sleep(delayMs);
+  }
+
+  throw lastError || new Error('Agent API request failed');
+}
+
 const payload = JSON.parse(readFileSync(contextPath, 'utf8'));
-const response = await fetch(`${apiUrl.replace(/\/$/, '')}/solve-issue`, {
+const response = await requestWithRetry(`${apiUrl.replace(/\/$/, '')}/solve-issue`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
