@@ -83,16 +83,23 @@ function sleep(ms) {
 function normalizeAgentResponse(raw, payload) {
   const issueNumber = payload.issue?.number || 0;
   const issueTitle = payload.issue?.title || 'Untitled issue';
+  const canHandle = Boolean(raw.can_handle);
+  const defaultSummary = canHandle
+    ? 'Agent 已经准备好一份低风险改动。'
+    : 'Agent 判断这个 Issue 当前信息不足，暂时不适合自动生成修复补丁。';
+  const defaultIssueComment = canHandle
+    ? `Agent 已经为 issue #${issueNumber} 生成了一条修复用的拉取请求。`
+    : `Agent 暂时不能直接处理 issue #${issueNumber}，建议补充更明确的复现步骤、期望结果和影响文件。`;
 
   return {
-    can_handle: Boolean(raw.can_handle),
-    summary: raw.summary || 'Agent 已经准备好一份低风险改动。',
-    branch_name: raw.branch_name || `agent/issue-${issueNumber}-${slugify(issueTitle)}`,
-    commit_message: raw.commit_message || `fix: 处理 issue #${issueNumber}`,
-    pr_title: raw.pr_title || `fix: 处理 issue #${issueNumber}`,
-    pr_body: raw.pr_body || `${raw.summary || 'Agent 已经准备好一份低风险改动。'}\n\nCloses #${issueNumber}`,
-    issue_comment: raw.issue_comment || `Agent 已经为 issue #${issueNumber} 生成了一条修复用的拉取请求。`,
-    patch: raw.patch || ''
+    can_handle: canHandle,
+    summary: raw.summary || defaultSummary,
+    branch_name: canHandle ? (raw.branch_name || `agent/issue-${issueNumber}-${slugify(issueTitle)}`) : '',
+    commit_message: canHandle ? (raw.commit_message || `fix: 处理 issue #${issueNumber}`) : '',
+    pr_title: canHandle ? (raw.pr_title || `fix: 处理 issue #${issueNumber}`) : '',
+    pr_body: canHandle ? (raw.pr_body || `${raw.summary || defaultSummary}\n\nCloses #${issueNumber}`) : '',
+    issue_comment: raw.issue_comment || defaultIssueComment,
+    patch: canHandle ? (raw.patch || '') : ''
   };
 }
 
