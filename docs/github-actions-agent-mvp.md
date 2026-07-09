@@ -76,6 +76,7 @@ git push -u origin dev
 - `AGENT_BASE_BRANCH`
 - `AGENT_DEMO_MODE`
 - `OPENAI_MODEL`
+- `OPENAI_ENDPOINT_PATH`
 - `AGENT_VALIDATION_COMMAND`
 - `ENABLE_AUTO_MERGE`
 
@@ -84,6 +85,7 @@ git push -u origin dev
 ```text
 AGENT_BASE_BRANCH=dev
 OPENAI_MODEL=gpt-4.1
+OPENAI_ENDPOINT_PATH=/chat/completions
 AGENT_VALIDATION_COMMAND=echo "这里填你的 lint/build/test 命令"
 ENABLE_AUTO_MERGE=false
 ```
@@ -123,6 +125,7 @@ ENABLE_AUTO_MERGE=false
 AGENT_BASE_BRANCH=dev
 AGENT_DEMO_MODE=false
 OPENAI_MODEL=你的模型名
+OPENAI_ENDPOINT_PATH=/chat/completions
 AGENT_VALIDATION_COMMAND=echo "validation skipped"
 ```
 
@@ -132,6 +135,14 @@ AGENT_VALIDATION_COMMAND=echo "validation skipped"
 - `OPENAI_API_KEY`：你的中转站密钥
 
 这样 GitHub Actions 会直接调用这个兼容接口，不再要求你先部署一个单独的 Agent 服务。
+
+如果你使用的是“地址本身就是最终接口，不需要再拼 `/chat/completions`”的中转站，那么把变量设置成：
+
+```text
+OPENAI_ENDPOINT_PATH=
+```
+
+这样 workflow 就会直接请求 `OPENAI_BASE_URL` 本身。
 
 ## 如何在本地启动示例 Agent API
 

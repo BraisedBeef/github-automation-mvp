@@ -14,6 +14,7 @@ const demoMode = String(process.env.AGENT_DEMO_MODE || 'false') === 'true';
 const openaiBaseUrl = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/$/, '');
 const openaiApiKey = process.env.OPENAI_API_KEY || '';
 const openaiModel = process.env.OPENAI_MODEL || 'gpt-4.1';
+const openaiEndpointPath = process.env.OPENAI_ENDPOINT_PATH ?? '/chat/completions';
 
 function slugify(input) {
   return String(input || '')
@@ -91,7 +92,11 @@ async function callOpenAICompatibleModel(payload) {
     '如果需求不明确、风险过高、或者缺少必要上下文，请把 can_handle 设为 false，并解释原因。'
   ].join(' ');
 
-  const response = await requestWithRetry(`${openaiBaseUrl}/chat/completions`, {
+  const requestUrl = openaiEndpointPath === ''
+    ? openaiBaseUrl
+    : `${openaiBaseUrl}${openaiEndpointPath.startsWith('/') ? openaiEndpointPath : `/${openaiEndpointPath}`}`;
+
+  const response = await requestWithRetry(requestUrl, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${openaiApiKey}`,
