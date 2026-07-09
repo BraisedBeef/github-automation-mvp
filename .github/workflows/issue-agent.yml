@@ -17,6 +17,7 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'agent')
     runs-on: ubuntu-latest
     env:
+      AGENT_BASE_BRANCH: ${{ vars.AGENT_BASE_BRANCH || 'dev' }}
       AGENT_API_URL: ${{ secrets.AGENT_API_URL }}
       AGENT_API_TOKEN: ${{ secrets.AGENT_API_TOKEN }}
       AGENT_DEMO_MODE: ${{ vars.AGENT_DEMO_MODE || 'true' }}
@@ -28,6 +29,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ env.AGENT_BASE_BRANCH }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -78,11 +80,14 @@ jobs:
       - name: Commit and push agent branch
         if: steps.agent.outputs.can_handle == 'true'
         env:
+          BASE_BRANCH: ${{ env.AGENT_BASE_BRANCH }}
           BRANCH_NAME: ${{ steps.agent.outputs.branch_name }}
           COMMIT_MESSAGE: ${{ steps.agent.outputs.commit_message }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "$BASE_BRANCH":"refs/remotes/origin/$BASE_BRANCH"
+          git checkout -B "$BASE_BRANCH" "origin/$BASE_BRANCH"
           git checkout -B "$BRANCH_NAME"
           git add -A
           git commit -m "$COMMIT_MESSAGE"
@@ -97,13 +102,13 @@ jobs:
           PR_TITLE: ${{ steps.agent.outputs.pr_title }}
           PR_BODY: ${{ steps.agent.outputs.pr_body }}
           REPOSITORY: ${{ github.repository }}
-          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          BASE_BRANCH: ${{ env.AGENT_BASE_BRANCH }}
         run: |
           existing_url="$(gh pr list --repo "$REPOSITORY" --head "$BRANCH_NAME" --state open --json url --jq '.[0].url')"
           if [ -n "$existing_url" ]; then
             pr_url="$existing_url"
           else
-            pr_url="$(gh pr create --repo "$REPOSITORY" --base "$DEFAULT_BRANCH" --head "$BRANCH_NAME" --title "$PR_TITLE" --body "$PR_BODY")"
+            pr_url="$(gh pr create --repo "$REPOSITORY" --base "$BASE_BRANCH" --head "$BRANCH_NAME" --title "$PR_TITLE" --body "$PR_BODY")"
           fi
           pr_number="${pr_url##*/}"
           {
