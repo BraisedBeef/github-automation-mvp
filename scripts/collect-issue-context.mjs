@@ -124,32 +124,10 @@ const domainModuleFiles = domainRelated
       .slice(0, 12)
   : [];
 
-const themeReferenceFiles = themeRelated
-  ? [
-      'src/views/cdn/domain/list/entry.vue',
-      'src/views/cdn/domain/list/index.vue',
-      'src/views/v2/cdn/domain/list/index.vue',
-      'src/views/cdn/content/entry.vue',
-      'src/views/v2/cdn/content/index.vue'
-    ].filter(filePath => allFiles.includes(filePath))
-  : [];
-
-const domainPriorityFiles = domainRelated
-  ? [
-      'src/views/domain/index.vue',
-      'src/views/domain/list/index.vue',
-      'src/views/domain/list/table/index.vue',
-      'src/views/domain/config.ts',
-      'src/views/domain/config.scss'
-    ].filter(filePath => allFiles.includes(filePath))
-  : [];
-
 const selectedFiles = Array.from(new Set([...alwaysInclude, ...topFiles]));
 const finalSelectedFiles = Array.from(
   new Set([
     ...alwaysInclude,
-    ...domainPriorityFiles,
-    ...themeReferenceFiles,
     ...domainModuleFiles,
     ...topFiles
   ])
