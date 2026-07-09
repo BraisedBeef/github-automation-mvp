@@ -121,11 +121,39 @@ const domainModuleFiles = domainRelated
         filePath.startsWith('src/views/domain/')
         || filePath.startsWith('src/views/v2/domain/')
       )
-      .slice(0, 20)
+      .slice(0, 12)
+  : [];
+
+const themeReferenceFiles = themeRelated
+  ? [
+      'src/views/cdn/domain/list/entry.vue',
+      'src/views/cdn/domain/list/index.vue',
+      'src/views/v2/cdn/domain/list/index.vue',
+      'src/views/cdn/content/entry.vue',
+      'src/views/v2/cdn/content/index.vue'
+    ].filter(filePath => allFiles.includes(filePath))
+  : [];
+
+const domainPriorityFiles = domainRelated
+  ? [
+      'src/views/domain/index.vue',
+      'src/views/domain/list/index.vue',
+      'src/views/domain/list/table/index.vue',
+      'src/views/domain/config.ts',
+      'src/views/domain/config.scss'
+    ].filter(filePath => allFiles.includes(filePath))
   : [];
 
 const selectedFiles = Array.from(new Set([...alwaysInclude, ...topFiles]));
-const finalSelectedFiles = Array.from(new Set([...alwaysInclude, ...domainModuleFiles, ...topFiles])).slice(0, 36);
+const finalSelectedFiles = Array.from(
+  new Set([
+    ...alwaysInclude,
+    ...domainPriorityFiles,
+    ...themeReferenceFiles,
+    ...domainModuleFiles,
+    ...topFiles
+  ])
+).slice(0, 24);
 
 const fileContexts = finalSelectedFiles.map(filePath => {
   const content = readFileSync(path.join(repoRoot, filePath), 'utf8');
@@ -157,3 +185,7 @@ writeFileSync(
 );
 
 console.log(`Prepared context for issue #${issue.number} with ${finalSelectedFiles.length} candidate files.`);
+console.log('Selected candidate files:');
+for (const filePath of finalSelectedFiles) {
+  console.log(`- ${filePath}`);
+}
