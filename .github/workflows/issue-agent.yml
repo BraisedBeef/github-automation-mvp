@@ -75,18 +75,41 @@ jobs:
         if: steps.agent.outputs.can_handle == 'true' && env.AGENT_VALIDATION_COMMAND != ''
         run: ${{ env.AGENT_VALIDATION_COMMAND }}
 
-      - name: Create pull request
+      - name: Commit and push agent branch
+        if: steps.agent.outputs.can_handle == 'true'
+        env:
+          BRANCH_NAME: ${{ steps.agent.outputs.branch_name }}
+          COMMIT_MESSAGE: ${{ steps.agent.outputs.commit_message }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH_NAME"
+          git add -A
+          git commit -m "$COMMIT_MESSAGE"
+          git push --force-with-lease --set-upstream origin "$BRANCH_NAME"
+
+      - name: Create or reuse pull request
         if: steps.agent.outputs.can_handle == 'true'
         id: cpr
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: ${{ steps.agent.outputs.commit_message }}
-          branch: ${{ steps.agent.outputs.branch_name }}
-          title: ${{ steps.agent.outputs.pr_title }}
-          body: ${{ steps.agent.outputs.pr_body }}
-          labels: agent-generated
-          delete-branch: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ steps.agent.outputs.branch_name }}
+          PR_TITLE: ${{ steps.agent.outputs.pr_title }}
+          PR_BODY: ${{ steps.agent.outputs.pr_body }}
+          REPOSITORY: ${{ github.repository }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          existing_url="$(gh pr list --repo "$REPOSITORY" --head "$BRANCH_NAME" --state open --json url --jq '.[0].url')"
+          if [ -n "$existing_url" ]; then
+            pr_url="$existing_url"
+          else
+            pr_url="$(gh pr create --repo "$REPOSITORY" --base "$DEFAULT_BRANCH" --head "$BRANCH_NAME" --title "$PR_TITLE" --body "$PR_BODY")"
+          fi
+          pr_number="${pr_url##*/}"
+          {
+            echo "pull-request-url=$pr_url"
+            echo "pull-request-number=$pr_number"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Comment with pull request link
         if: steps.agent.outputs.can_handle == 'true' && steps.cpr.outputs.pull-request-number != ''
