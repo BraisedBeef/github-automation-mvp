@@ -14,7 +14,7 @@ const demoMode = String(process.env.AGENT_DEMO_MODE || 'false') === 'true';
 const openaiBaseUrl = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/$/, '');
 const openaiApiKey = process.env.OPENAI_API_KEY || '';
 const openaiModel = process.env.OPENAI_MODEL || 'gpt-4.1';
-const openaiEndpointPath = process.env.OPENAI_ENDPOINT_PATH ?? '/chat/completions';
+const openaiEndpointPath = process.env.OPENAI_ENDPOINT_PATH || '';
 
 function slugify(input) {
   return String(input || '')
@@ -92,34 +92,85 @@ async function callOpenAICompatibleModel(payload) {
     '如果需求不明确、风险过高、或者缺少必要上下文，请把 can_handle 设为 false，并解释原因。'
   ].join(' ');
 
-  const requestUrl = openaiEndpointPath === ''
-    ? openaiBaseUrl
-    : `${openaiBaseUrl}${openaiEndpointPath.startsWith('/') ? openaiEndpointPath : `/${openaiEndpointPath}`}`;
+  const requestBody = {
+    model: openaiModel,
+    temperature: 0.2,
+    response_format: { type: 'json_object' },
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: JSON.stringify(payload, null, 2) }
+    ]
+  };
 
-  const response = await requestWithRetry(requestUrl, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${openaiApiKey}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: openaiModel,
-      temperature: 0.2,
-      response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: JSON.stringify(payload, null, 2) }
-      ]
-    })
-  });
+  const endpointCandidates = openaiEndpointPath
+    ? [`${openaiBaseUrl}${openaiEndpointPath.startsWith('/') ? openaiEndpointPath : `/${openaiEndpointPath}`}`]
+    : [
+        openaiBaseUrl,
+        `${openaiBaseUrl}/chat/completions`,
+        `${openaiBaseUrl}/responses`
+      ];
 
-  const data = await response.json();
-  const content = data.choices?.[0]?.message?.content;
-  if (!content) {
-    throw new Error('模型响应中没有返回 message.content');
+  let lastError;
+
+  for (const requestUrl of endpointCandidates) {
+    try {
+      console.log(`尝试模型接口地址：${requestUrl}`);
+
+      const response = await requestWithRetry(requestUrl, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${openaiApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestUrl.endsWith('/responses')
+          ? {
+              model: openaiModel,
+              input: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: JSON.stringify(payload, null, 2) }
+              ]
+            }
+          : requestBody)
+      });
+
+      const data = await response.json();
+      const content = requestUrl.endsWith('/responses')
+        ? extractResponsesText(data)
+        : data.choices?.[0]?.message?.content;
+
+      if (!content) {
+        throw new Error('模型响应中没有返回可解析内容');
+      }
+
+      return JSON.parse(content);
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      console.warn(`接口地址 ${requestUrl} 调用失败：${lastError.message}`);
+    }
   }
 
-  return JSON.parse(content);
+  throw lastError || new Error('所有模型接口地址都调用失败');
+}
+
+function extractResponsesText(data) {
+  if (typeof data.output_text === 'string' && data.output_text) {
+    return data.output_text;
+  }
+
+  const outputs = Array.isArray(data.output) ? data.output : [];
+  for (const item of outputs) {
+    const contents = Array.isArray(item.content) ? item.content : [];
+    for (const part of contents) {
+      if (part?.type === 'output_text' && typeof part.text === 'string') {
+        return part.text;
+      }
+      if (part?.type === 'text' && typeof part.text === 'string') {
+        return part.text;
+      }
+    }
+  }
+
+  return '';
 }
 
 async function requestWithRetry(url, options, retries = 4) {
