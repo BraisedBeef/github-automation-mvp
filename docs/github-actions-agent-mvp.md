@@ -6,7 +6,7 @@ When an issue has the `agent` label, GitHub Actions will:
 
 1. Check out the repository
 2. Build a compact issue context payload
-3. Call your external Agent API
+3. Call your external Agent API, or generate a built-in demo result
 4. Apply the returned patch
 5. Optionally run a validation command
 6. Open a pull request
@@ -28,7 +28,7 @@ If the PR body contains `Closes #<issue-number>`, GitHub will close the issue au
 
 ### GitHub Secrets
 
-Set these repository secrets:
+Set these repository secrets when you are using a real external Agent API:
 
 - `AGENT_API_URL`
 - `AGENT_API_TOKEN`
@@ -37,6 +37,7 @@ Set these repository secrets:
 
 Optional repository variables:
 
+- `AGENT_DEMO_MODE`
 - `AGENT_VALIDATION_COMMAND`
 - `ENABLE_AUTO_MERGE`
 
@@ -46,6 +47,16 @@ Examples:
 AGENT_VALIDATION_COMMAND=echo "Add your lint/build/test command here"
 ENABLE_AUTO_MERGE=false
 ```
+
+Example demo-first setup:
+
+```text
+AGENT_DEMO_MODE=true
+AGENT_VALIDATION_COMMAND=echo "validation skipped"
+ENABLE_AUTO_MERGE=false
+```
+
+When `AGENT_DEMO_MODE=true`, the workflow does not require `AGENT_API_URL` or `AGENT_API_TOKEN`. It generates a demo patch directly inside GitHub Actions so you can verify labels, branching, PR creation, and issue comments without exposing a local service.
 
 ## Starting the example Agent API locally
 
@@ -63,12 +74,11 @@ If you set `AGENT_DEMO_MODE=true`, the service will not call a model. It will cr
 
 ## Recommended first test
 
-1. Start the Agent API service
-2. Expose it with a public URL such as a tunnel or deploy it
-3. Add `AGENT_API_URL` and `AGENT_API_TOKEN` in GitHub repository settings
-4. Create a small issue
-5. Add the `agent` label
-6. Watch the workflow open a PR
+1. For the simplest test, set `AGENT_DEMO_MODE=true`
+2. Create a small issue
+3. Add the `agent` label
+4. Watch the workflow open a PR
+5. Only after that, switch to a real hosted Agent API if you want model-driven fixes
 
 ## Production hardening ideas
 

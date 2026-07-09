@@ -10,9 +10,52 @@ const patchPath = path.join(outputDir, 'issue.patch');
 
 const apiUrl = process.env.AGENT_API_URL;
 const apiToken = process.env.AGENT_API_TOKEN || '';
+const demoMode = String(process.env.AGENT_DEMO_MODE || 'false') === 'true';
 
-if (!apiUrl) {
-  throw new Error('AGENT_API_URL secret is required');
+function slugify(input) {
+  return String(input || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 40) || 'issue';
+}
+
+function buildDemoPatch(issueNumber, issueTitle) {
+  const filePath = `docs/agent-runs/issue-${issueNumber}.md`;
+  const contentLines = [
+    `# Agent Demo Run for Issue #${issueNumber}`,
+    '',
+    `Title: ${issueTitle}`,
+    '',
+    'This file was created by the GitHub Actions demo mode to prove that the issue-to-PR workflow is wired correctly.'
+  ];
+
+  return [
+    `diff --git a/${filePath} b/${filePath}`,
+    'new file mode 100644',
+    'index 0000000..1111111',
+    '--- /dev/null',
+    `+++ b/${filePath}`,
+    '@@ -0,0 +1,5 @@',
+    ...contentLines.map(line => `+${line}`),
+    ''
+  ].join('\n');
+}
+
+function buildDemoResponse(payload) {
+  const issueNumber = payload.issue?.number || 0;
+  const issueTitle = payload.issue?.title || 'Untitled issue';
+
+  return {
+    can_handle: true,
+    summary: 'GitHub Actions demo mode is enabled, so the workflow created a trace file instead of editing application code.',
+    branch_name: `agent/issue-${issueNumber}-${slugify(issueTitle)}`,
+    commit_message: `chore: demo agent run for issue #${issueNumber}`,
+    pr_title: `chore: demo agent run for issue #${issueNumber}`,
+    pr_body: `GitHub Actions demo mode is enabled, so the workflow created a trace file instead of editing application code.\n\nCloses #${issueNumber}`,
+    issue_comment: `Demo mode created a verification PR for issue #${issueNumber}.`,
+    patch: buildDemoPatch(issueNumber, issueTitle)
+  };
 }
 
 function sleep(ms) {
@@ -52,21 +95,31 @@ async function requestWithRetry(url, options, retries = 4) {
 }
 
 const payload = JSON.parse(readFileSync(contextPath, 'utf8'));
-const response = await requestWithRetry(`${apiUrl.replace(/\/$/, '')}/solve-issue`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    ...(apiToken ? { Authorization: `Bearer ${apiToken}` } : {})
-  },
-  body: JSON.stringify(payload)
-});
+let result;
 
-if (!response.ok) {
-  const text = await response.text();
-  throw new Error(`Agent API request failed: ${response.status} ${text}`);
+if (demoMode) {
+  result = buildDemoResponse(payload);
+} else {
+  if (!apiUrl) {
+    throw new Error('AGENT_API_URL secret is required when AGENT_DEMO_MODE is false');
+  }
+
+  const response = await requestWithRetry(`${apiUrl.replace(/\/$/, '')}/solve-issue`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(apiToken ? { Authorization: `Bearer ${apiToken}` } : {})
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Agent API request failed: ${response.status} ${text}`);
+  }
+
+  result = await response.json();
 }
-
-const result = await response.json();
 mkdirSync(outputDir, { recursive: true });
 writeFileSync(responsePath, `${JSON.stringify(result, null, 2)}\n`);
 writeFileSync(patchPath, result.patch || '', 'utf8');

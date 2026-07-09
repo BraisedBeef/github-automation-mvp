@@ -19,6 +19,7 @@ jobs:
     env:
       AGENT_API_URL: ${{ secrets.AGENT_API_URL }}
       AGENT_API_TOKEN: ${{ secrets.AGENT_API_TOKEN }}
+      AGENT_DEMO_MODE: ${{ vars.AGENT_DEMO_MODE || 'true' }}
       AGENT_VALIDATION_COMMAND: ${{ vars.AGENT_VALIDATION_COMMAND }}
       ENABLE_AUTO_MERGE: ${{ vars.ENABLE_AUTO_MERGE || 'false' }}
 
@@ -36,7 +37,7 @@ jobs:
       - name: Build issue context
         run: node scripts/collect-issue-context.mjs
 
-      - name: Call Agent API
+      - name: Generate agent result
         id: agent
         run: node scripts/request-agent-fix.mjs
 
