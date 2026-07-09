@@ -76,6 +76,8 @@ git push -u origin dev
 - `AGENT_BASE_BRANCH`
 - `AGENT_DEMO_MODE`
 - `OPENAI_MODEL`
+  - 建议直接填写完整模型名，例如 `gpt-5.4`
+  - 如果填写 `5.4` 这类简写，当前脚本也会自动转换成 `gpt-5.4`
 - `OPENAI_ENDPOINT_PATH`
 - `AGENT_VALIDATION_COMMAND`
 - `ENABLE_AUTO_MERGE`
@@ -84,7 +86,7 @@ git push -u origin dev
 
 ```text
 AGENT_BASE_BRANCH=dev
-OPENAI_MODEL=gpt-4.1
+OPENAI_MODEL=gpt-5.4
 OPENAI_ENDPOINT_PATH=/chat/completions
 AGENT_VALIDATION_COMMAND=echo "这里填你的 lint/build/test 命令"
 ENABLE_AUTO_MERGE=false
@@ -124,7 +126,7 @@ ENABLE_AUTO_MERGE=false
 ```text
 AGENT_BASE_BRANCH=dev
 AGENT_DEMO_MODE=false
-OPENAI_MODEL=你的模型名
+OPENAI_MODEL=你的模型名（例如 `gpt-5.4`）
 OPENAI_ENDPOINT_PATH=/chat/completions
 AGENT_VALIDATION_COMMAND=echo "validation skipped"
 ```

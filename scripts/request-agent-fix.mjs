@@ -13,7 +13,7 @@ const apiToken = process.env.AGENT_API_TOKEN || '';
 const demoMode = String(process.env.AGENT_DEMO_MODE || 'false') === 'true';
 const openaiBaseUrl = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/$/, '');
 const openaiApiKey = process.env.OPENAI_API_KEY || '';
-const openaiModel = process.env.OPENAI_MODEL || 'gpt-4.1';
+const openaiModel = normalizeModelName(process.env.OPENAI_MODEL || 'gpt-4.1');
 const openaiEndpointPath = process.env.OPENAI_ENDPOINT_PATH || '';
 
 function slugify(input) {
@@ -22,6 +22,20 @@ function slugify(input) {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .slice(0, 40) || 'issue';
+}
+
+function normalizeModelName(model) {
+  const value = String(model || '').trim();
+  if (!value) {
+    return 'gpt-4.1';
+  }
+
+  // Some proxy tools accept shorthand like "5.4" in the UI and rewrite it to "gpt-5.4".
+  if (/^\d+(\.\d+)?(-mini)?$/.test(value)) {
+    return `gpt-${value}`;
+  }
+
+  return value;
 }
 
 function buildDemoPatch(issueNumber, issueTitle) {
