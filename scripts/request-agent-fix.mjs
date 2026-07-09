@@ -11,6 +11,9 @@ const patchPath = path.join(outputDir, 'issue.patch');
 const apiUrl = process.env.AGENT_API_URL;
 const apiToken = process.env.AGENT_API_TOKEN || '';
 const demoMode = String(process.env.AGENT_DEMO_MODE || 'false') === 'true';
+const openaiBaseUrl = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/$/, '');
+const openaiApiKey = process.env.OPENAI_API_KEY || '';
+const openaiModel = process.env.OPENAI_MODEL || 'gpt-4.1';
 
 function slugify(input) {
   return String(input || '')
@@ -62,6 +65,58 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function normalizeAgentResponse(raw, payload) {
+  const issueNumber = payload.issue?.number || 0;
+  const issueTitle = payload.issue?.title || 'Untitled issue';
+
+  return {
+    can_handle: Boolean(raw.can_handle),
+    summary: raw.summary || 'Agent 已经准备好一份低风险改动。',
+    branch_name: raw.branch_name || `agent/issue-${issueNumber}-${slugify(issueTitle)}`,
+    commit_message: raw.commit_message || `fix: 处理 issue #${issueNumber}`,
+    pr_title: raw.pr_title || `fix: 处理 issue #${issueNumber}`,
+    pr_body: raw.pr_body || `${raw.summary || 'Agent 已经准备好一份低风险改动。'}\n\nCloses #${issueNumber}`,
+    issue_comment: raw.issue_comment || `Agent 已经为 issue #${issueNumber} 生成了一条修复用的拉取请求。`,
+    patch: raw.patch || ''
+  };
+}
+
+async function callOpenAICompatibleModel(payload) {
+  const systemPrompt = [
+    '你是一个 GitHub Issue 自动修复 Agent。',
+    '你必须只返回 JSON。',
+    '你需要判断这个 Issue 是否适合自动处理。',
+    '如果适合，请返回可以直接被 git apply 应用的 unified diff patch。',
+    '只允许修改仓库上下文里已经提供的文件，改动必须尽量小、尽量确定。',
+    '如果需求不明确、风险过高、或者缺少必要上下文，请把 can_handle 设为 false，并解释原因。'
+  ].join(' ');
+
+  const response = await requestWithRetry(`${openaiBaseUrl}/chat/completions`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${openaiApiKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: openaiModel,
+      temperature: 0.2,
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: JSON.stringify(payload, null, 2) }
+      ]
+    })
+  });
+
+  const data = await response.json();
+  const content = data.choices?.[0]?.message?.content;
+  if (!content) {
+    throw new Error('模型响应中没有返回 message.content');
+  }
+
+  return JSON.parse(content);
+}
+
 async function requestWithRetry(url, options, retries = 4) {
   let lastError;
 
@@ -99,9 +154,12 @@ let result;
 
 if (demoMode) {
   result = buildDemoResponse(payload);
+} else if (openaiApiKey) {
+  const raw = await callOpenAICompatibleModel(payload);
+  result = normalizeAgentResponse(raw, payload);
 } else {
   if (!apiUrl) {
-    throw new Error('AGENT_API_URL secret is required when AGENT_DEMO_MODE is false');
+    throw new Error('当 AGENT_DEMO_MODE=false 时，必须提供 OPENAI_API_KEY 或 AGENT_API_URL');
   }
 
   const response = await requestWithRetry(`${apiUrl.replace(/\/$/, '')}/solve-issue`, {
@@ -118,7 +176,8 @@ if (demoMode) {
     throw new Error(`Agent API request failed: ${response.status} ${text}`);
   }
 
-  result = await response.json();
+  const raw = await response.json();
+  result = normalizeAgentResponse(raw, payload);
 }
 mkdirSync(outputDir, { recursive: true });
 writeFileSync(responsePath, `${JSON.stringify(result, null, 2)}\n`);

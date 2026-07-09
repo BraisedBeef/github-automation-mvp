@@ -8,7 +8,7 @@
 
 1. 从 `dev` 分支检出代码
 2. 生成精简的 Issue 上下文
-3. 调用外部 Agent API，或者直接生成内置演示结果
+3. 直接调用兼容 OpenAI 的模型接口，或者调用外部 Agent API，或者直接生成内置演示结果
 4. 创建 `agent/issue-<编号>-<标题>` 分支
 5. 应用返回的补丁
 6. 按需执行校验命令
@@ -59,7 +59,12 @@ git push -u origin dev
 
 ### GitHub Secrets
 
-只有在你要接入真实外部 Agent API 时，才需要配置下面两个 Secret：
+如果你要接入真实模型，推荐直接配置下面这组：
+
+- `OPENAI_BASE_URL`
+- `OPENAI_API_KEY`
+
+如果你已经有自己独立部署的 Agent API，也可以改用：
 
 - `AGENT_API_URL`
 - `AGENT_API_TOKEN`
@@ -70,6 +75,7 @@ git push -u origin dev
 
 - `AGENT_BASE_BRANCH`
 - `AGENT_DEMO_MODE`
+- `OPENAI_MODEL`
 - `AGENT_VALIDATION_COMMAND`
 - `ENABLE_AUTO_MERGE`
 
@@ -77,6 +83,7 @@ git push -u origin dev
 
 ```text
 AGENT_BASE_BRANCH=dev
+OPENAI_MODEL=gpt-4.1
 AGENT_VALIDATION_COMMAND=echo "这里填你的 lint/build/test 命令"
 ENABLE_AUTO_MERGE=false
 ```
@@ -104,8 +111,27 @@ ENABLE_AUTO_MERGE=false
 这样你可以先把流程和权限跑通，等以后有了真实接口，再切换到：
 
 - `AGENT_DEMO_MODE=false`
-- 配置 `AGENT_API_URL`
-- 配置 `AGENT_API_TOKEN`
+- 优先配置 `OPENAI_BASE_URL`
+- 优先配置 `OPENAI_API_KEY`
+- 配置 `OPENAI_MODEL`
+
+## 如果你有兼容 OpenAI 的中转站，怎么做
+
+如果你手上有一个兼容 OpenAI API 的中转站，那么最简单的真实模式配置就是：
+
+```text
+AGENT_BASE_BRANCH=dev
+AGENT_DEMO_MODE=false
+OPENAI_MODEL=你的模型名
+AGENT_VALIDATION_COMMAND=echo "validation skipped"
+```
+
+然后把下面两个值配成 GitHub Secrets：
+
+- `OPENAI_BASE_URL`：例如 `https://你的中转站地址/v1`
+- `OPENAI_API_KEY`：你的中转站密钥
+
+这样 GitHub Actions 会直接调用这个兼容接口，不再要求你先部署一个单独的 Agent 服务。
 
 ## 如何在本地启动示例 Agent API
 
@@ -115,7 +141,7 @@ cp .env.example .env
 node src/server.mjs
 ```
 
-默认服务地址是 `http://127.0.0.1:8787`。如果以后你接真实接口，建议优先部署到一台固定的云服务，而不是依赖临时隧道。
+默认服务地址是 `http://127.0.0.1:8787`。如果以后你仍然想走“独立 Agent API 服务”这条路，建议优先部署到一台固定的云服务，而不是依赖临时隧道。
 
 ### 演示模式说明
 
@@ -127,7 +153,7 @@ node src/server.mjs
 2. 创建一个测试 Issue
 3. 给这个 Issue 打上 `agent` 标签
 4. 观察 workflow 是否自动创建 `agent/* -> dev` PR
-5. 确认流程跑通后，再切换到真实托管的 Agent API
+5. 确认流程跑通后，再切换到真实模型接口或真实托管的 Agent API
 6. 后续发布时，再由人工创建 `dev -> main` 发布 PR
 
 ## 生产环境建议
