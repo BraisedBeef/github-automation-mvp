@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>云服务等级协议</title>
+  </head>
+  <style>
+    p{
+      margin: 0;
+    }
+    body {
+      padding: 40px 120px;
+    }
+    .title-box {
+      text-indent: 0;
+      text-align: center;
+    }
+    .title-box span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+       /* font-weight: 500; */
+      font-size: 27px;
+      color: #000000;
+      line-height: 38px;
+      text-align: right;
+      font-style: normal;
+    }
+    /* nav区域 */
+    .nav-box {
+      margin-top: 40px;
+    }
+    .nav-box .nav span {
+      text-align: left;
+      font-style: normal;
+      color: #000000;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 26px;
+      font-family:
+        PingFangSC,
+        PingFang SC;
+    }
+    /* 小标题 */
+    .son-title {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .son-title span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 21px;
+       /* font-weight: 500; */
+      line-height: 30px;
+      text-indent: 0;
+    }
+    /* 内容区域 */
+    .content-box {
+      margin-top: 40px;
+    }
+    .content-box span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 21px;
+      line-height: 30px;
+      text-indent: 0;
+      text-align: center;
+    }
+    /* 内容标题 */
+    .content-title span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 21px;
+      line-height: 30px;
+      text-indent: 0;
+      text-align: center;
+    }
+    /* 内容文字 */
+    .content-txt span{
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 16px;
+      line-height: 30px;
+      text-indent: 0;
+    }
+  </style>
+  <body>
+    <!-- 标题 -->
+    <p class="title-box">
+      <span>クラウドサービスレベル契約</span>
+    </p>
+    <!-- nav -->
+    <div class="nav-box">
+      <div class="nav">
+        <span
+          >本サービスレベル契約（以下「SLA」といいます）は、貴社と猫云（以下「猫云」といいます）との間で締結された「猫云ユーザー契約」（以下「契約」といいます）の不可分の一部です。契約で定義された用語は、本SLAにおいても同じ意味を持ちますが、本SLAで別途定義されている場合はその限りではありません。本SLAの条項と契約の条項に矛盾または不一致がある場合、本SLAが優先されますが、その矛盾または不一致が存在する範囲内でのみ適用されます。</span
+        >
+      </div>
+      <div class="nav">
+        <span
+          >猫云は適宜SLA契約を改訂することがありますが、貴社の契約期間中において、サービスレベルを実質的に低下させる方法でSLA条項を改訂することはありません。もし貴社がサービスを更新する場合、更新時に適用されるSLA契約のバージョンが貴社の更新期間に適用されます。サービスの継続は、貴社がその時点で適用されるSLAに同意したことを意味します。</span
+        >
+      </div>
+    </div>
+    <!-- 二级标题（居中） -->
+    <p class="son-title">
+      <span>一般条項</span>
+    </p>
+    <!-- ********************************************* 列 *************************************************** -->
+    <div class="content-box">
+      <!-- 小标题 -->
+      <p class="content-title">
+        <span>1. 定義</span>
+      </p>
+      <!-- 内容 -->
+      <p class="content-txt"><span>サービス: 本SLAの目的において、本SLAで言及されるサービスは、本SLAで以下に記載されたクラウドサービスのみを指します。</span></p>
+      <p class="content-txt"><span>サービス期間: 1つのサービス期間は1暦月とします。</span></p>
+      <p class="content-txt"><span>サービス期間総時間: 各サービス期間内の総日数 × 24（時間） × 60（分）を指します。</span></p>
+      <p class="content-txt">
+        <span>
+          サービスの利用不可: サービスの利用不可は、以下のサービス特定条項で各サービスについて定義されます。サービスの利用不可には、以下に記載された制限およびサービス特定条項に記載された制限により発生した利用不可は含まれません。
+        </span>
+      </p>
+      <p class="content-txt">
+        <span>
+          サービス利用不可時間: 1つのサービス期間内でサービス利用不可となった時間の合計を指し、1ヶ月未満の場合でも1ヶ月として計算されます。サービス利用不可時間は重複して計算されることはなく、各サービス期間の利用不可時間は次のサービス期間に含まれません。
+        </span>
+      </p>
+      <p class="content-txt">
+        <span> サービスの可用性: 1つのサービス期間内で、本SLAに記載されたサービスに対して、約束されたサービスの可用率を指します。 </span>
+      </p>
+      <p class="content-txt">
+        <span>
+          月額サービス料金: 1つのサービス期間（すなわち暦月）内に、顧客がそのサービス期間に対して支払うサービス料金の総額を指します。顧客が複数のサービス期間の料金を一括で支払う場合、その月額サービス料金は購入した月数に応じて按分して計算されます。
+        </span>
+      </p>
+    </div>
+    <!-- ********************************************* 列 *************************************************** -->
+    <div class="content-box">
+      <!-- 小标题 -->
+      <p class="content-title">
+        <span>2. 補償</span>
+      </p>
+      <!-- 内容 -->
+      <p class="content-txt"><span>補償方法: 猫云が本SLAに基づき約束したサービス可用性を達成できなかった場合、貴社は本SLAの規定に従って補償を申請することができます。補償は代金券の形で提供され、これが猫云がサービスの可用性の約束に満たない場合に提供するすべてかつ唯一の補償となります。</span></p>
+      <p class="content-txt"><span>補償申請期限: 各サービス期間の請求が清算された後、そのサービス期間内でサービス可用性の約束を満たしていないクラウドサービスに対して補償申請を行うことができます。補償申請は、サービス可用性の約束が満たされなかったサービス期間の終了後2ヶ月以内に提出しなければなりません。申請期限を過ぎた補償申請は受理されません。猫云は貴社の申請を合理的に評価し、本SLAの規定および誠実の原則に基づき補償の適用可否を判断します。</span></p>
+      <p class="content-txt"><span>補償申請方法: 猫云ユーザーセンターからメールでご連絡いただけます。</span></p>
+    </div>
+    <!-- ********************************************* 列 *************************************************** -->
+    <div class="content-box">
+      <!-- 小标题 -->
+      <p class="content-title">
+        <span>3. 制限</span>
+      </p>
+      <!-- 内容 -->
+      <p class="content-txt"><span>以下の状況による利用不可は、サービス利用不可時間に含まれません：</span></p>
+      <p class="content-txt"><span>3.1      不可抗力による原因</span></p>
+      <p class="content-txt"><span>3.2      法律、規制、契約および契約で引用されているポリシーに基づき、サービスが停止または終了した場合；</span></p>
+      <p class="content-txt"><span>3.3      貴社または第三者の原因による場合；</span></p>
+      <p class="content-txt"><span>3.4      システムまたはサービスの定期メンテナンスによる場合；</span></p>
+      <p class="content-txt"><span>3.5      貴社がサービス利用文書または操作ガイドラインに従ってサービスを利用しなかった場合；</span></p>
+      <p class="content-txt"><span>3.6      ネットワーク運営者の原因によるサービスの利用不可。</span></p>
+    </div>
+  </body>
+</html>

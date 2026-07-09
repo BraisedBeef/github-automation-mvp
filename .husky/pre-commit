@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+pnpm check:case
+pnpm typecheck
+pnpm -s lint-staged

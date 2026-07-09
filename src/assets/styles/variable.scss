@@ -1,0 +1,141 @@
+:root {
+  /* 带上？means: 暂无找到使用位置 */
+
+  /* 猫云基础颜色 */
+  --primary-color: #0063ff;
+  --success-color: #0fbe5b;
+  --error-color: #fe4d4f;
+  --warning-color: #fc8c00;
+
+  /* el-plus基础颜色 */
+  --el-color-primary: #0063ff;
+  --el-color-success: #0fbe5b;
+  --el-color-danger: #fe4d4f;
+  --el-color-warning: #fc8c00;
+
+  /* border颜色 */
+  --border-c: #ddd;
+
+  /* 白背景分割线 ？ */
+  --border-divider: #e5e6e8;
+
+  /* table头部的背景色  */
+  --table-head-bgc: #f9fafc;
+
+  /* 底色 ？ */
+  --base-paint: #f2f4f8;
+
+  /* [table,select,dropdown]选中、hover后的背景色 */
+  --selected-bgc: #f1f7ff;
+
+  /*  // 按钮禁止点击 */
+  --disabled-color: #f9fafc;
+
+  /* 按钮hover和点击时的颜色 */
+  --btn-hover: #6aa1f8;
+  --btn-click: #1d6deb;
+
+  /* 主要文字 */
+  --primary-text: #000;
+
+  /* 表格文字 */
+  --table-text: #222;
+
+  /* 常规文本 */
+  --common-text: #555;
+
+  /* 次要文字 */
+  --sub-text: #999;
+
+  /* 提示文字 */
+  --tip-text: #ccc;
+
+  /* 高亮文字 */
+  --active-text: #0063ff;
+
+  /* 字体大小 变量需要的话自行添加 */
+
+  /* 特殊数字: 字体示例：额度数字等特殊字符 */
+  --special-fz: 32px;
+
+  /* 特殊数字2: 字体示例：开票数字等特殊字符 */
+  --sub-special-fz: 30px;
+
+  /* 展示文字: 字体示例：购买成功、交易成功等特殊字符 */
+  --display-fz: 24px;
+
+  /* 一级标题: 字体示例子：侧边弹窗标题 */
+  --title-fz: 21px;
+
+  /* 二级标题: 字体示例：弹窗标题 */
+  --sub-title-fz: 18px;
+
+  /* 正文标题: 字体示例：左侧弹窗字体、文本内容标题、表单内容等 */
+  --main-fz: 16px;
+
+  /* 正文内容: 字体示例：正文内容、表单内容 */
+  --text-fz: 14px;
+
+  /* 辅助信息: 字体示例：提示辅助性文字 */
+  --tip-fz: 12px;
+
+  /* 蓝盒子的背景色 */
+  --info-box-bgc: #e3edff;
+
+  /* 红盒子的背景色 */
+  --error-box-bgc: #ffebeb;
+
+  /* 橙盒子背景色 */
+  --warning-box-bgc: #fff3d3;
+
+  /* 绿盒子背景色 */
+  --success-box-bgc: #e2fff0;
+
+  /* 最小页面宽度 */
+  --app-min-width: 1210px;
+
+  /* input select form-item button基础高度 */
+  --input-height: 34px;
+
+  /* header */
+  --header-h: 60px;
+  --page-header-h: 60px;
+
+  /* menu */
+  --menu-w: 200px;
+  --menu-w-collapsed: 60px;
+  --menu-item-h: 60px;
+  --menu-index: 1900;
+  --menu-active-bg: linear-gradient(90deg, rgb(0 99 255 / 0%) 0%, rgb(0 99 255 / 12%) 100%);
+  --menu-icon-size: 20px;
+  --menu-icon-left: 20px;
+  --menu-title-left: 48px;
+  --menu-title-w: 130px;
+  --menu-title-with-children: 100px;
+
+  /* radio */
+  --radio-h: 34px;
+  --radio-icon-size: 16px;
+  --radio-inner-size: 6px;
+
+  /* checkbox */
+  --checkbox-size: 16px;
+
+  /* pagination */
+  --pagination-size: 30px;
+
+  /* input */
+  --input-padding: 1px 12px 1px 8px;
+
+  /* select */
+  --select-padding: 1px 8px;
+
+  /* button */
+  --btn-padding: 7px 24px;
+
+  /* page-header已经移除: page-header使用header的高度 => --header-h */
+
+  /* xxxx-index => 设置z-indx */
+
+  /* ... 其它size自行补充 */
+}

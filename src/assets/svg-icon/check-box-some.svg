@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>选框/多选-未全选</title>
+    <g id="CDN" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="猫云控制台设计规范" transform="translate(-246.000000, -3156.000000)" fill-rule="nonzero">
+            <g id="编组-93" transform="translate(110.000000, 2990.000000)">
+                <g id="编组-73" transform="translate(136.000000, 164.000000)">
+                    <g id="选框/多选-未全选" transform="translate(0.000000, 2.000000)">
+                        <rect x="0" y="0" width="16" height="16"></rect>
+                        <rect id="选框/多选-置灰" stroke="#DDDDDD" fill="#FFFFFF" x="0.5" y="0.5" width="15" height="15"></rect>
+                        <rect id="矩形-39" fill="#0063FF" x="5" y="5" width="6" height="6"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

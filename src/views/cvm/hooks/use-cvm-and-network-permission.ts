@@ -1,0 +1,235 @@
+import { _serverDynamicConfigList } from '@/apis/cvm/permission'
+
+/**
+ * @name 华为腾讯亚马逊厂商在不同地域下权限
+ */
+
+// 模块id
+export const moduleMap = {
+  ins: 3,
+  disk: 5,
+  snapshot: 4,
+  image: 6,
+  sshKey: 7,
+  insRecovery: 16,
+  diskRecovery: 17,
+
+  vpc: 8,
+  subnet: 9,
+  rb: 10,
+  eip: 11,
+  eni: 12,
+  group: 13,
+  ipGroup: 14,
+  pkg: 15,
+  eipRecovery: 18,
+}
+
+// 模块权限标识
+export const permMap = {
+  ins: {
+    CREATE_VM: '/CVM/CREATE_VM', // 创建云主机
+    RENAME_VM: '/CVM/RENAME_VM', // 重命名云主机
+    REBOOT_VM: '/CVM/REBOOT_VM', // 重启云主机
+    START_VM: '/CVM/START_VM', // 启动云主机
+    STOP_VM: '/CVM/STOP_VM', // 关闭云主机
+    RESET_VM_PWD: '/CVM/RESET_VM_PWD', // 重置云主机密码
+    RESET_VM_UNIT: '/CVM/RESET_VM_UNIT', // 调整云主机规格
+    RESET_VM_SYSTEM: '/CVM/RESET_VM_SYSTEM', // 云主机重装系统
+    CREATE_VM_IMAGE: '/CVM/CREATE_VM_IMAGE', // 创建云主机镜像
+    CHANGE_VM_IMAGE: '/CVM/CHANGE_VM_IMAGE', // 修改云主机镜像
+    DELETE_VM: '/CVM/DELETE_VM', // 销毁云主机
+    SET_VM_AUTO_RENEW: '/CVM/SET_VM_AUTO_RENEW', // 设置云服务器自动续费
+    VM_RENEW: '/CVM/VM_RENEW', // 云服务器续费
+    SET_TIMING_SNAPSHOT_TACTICS: '/CVM/SET_TIMING_SNAPSHOT_TACTICS', // 设置定时快照策略
+    LOAD_KEY: '/CVM/LOAD_KEY', // 加载密钥
+    DISK_EXPANSION: '/CVM/DISK_EXPANSION', // 扩容
+    CVM_ASSIGNMENT_INTRANET_IP: '/CVM/CVM_ASSIGNMENT_INTRANET_IP', // 分配内网ip
+    CVM_RELEASE_INTRANET_IP: '/CVM/CVM_RELEASE_INTRANET_IP', // 释放内网ip
+    CVM_BIND_EIP: '/CVM/CVM_BIND_EIP', // 绑定弹性公网ip
+    CVM_UNBIND_EIP: '/CVM/CVM_UNBIND_EIP', // 解绑弹性公网ip
+    CVM_BIND_ENI: '/CVM/CVM_BIND_ENI', // 绑定弹性网卡
+    CVM_UNBIND_ENI: '/CVM/CVM_UNBIND_ENI', // 解绑弹性网卡
+    CVM_CONFIGURE_SECURITY_GROUP: '/CVM/CVM_CONFIGURE_SECURITY_GROUP', // 配置安全组
+    CVM_UPDATE_NETWORK: '/CVM/CVM_UPDATE_NETWORK', // 调整网络
+    CREATE_NEW_DISK: '/CVM/CREATE_NEW_DISK', // 云硬盘新增磁盘
+    ATTACH_DISK_TO_VM: '/CVM/ATTACH_DISK_TO_VM', // 云硬盘挂载磁盘
+    CREATE_DISK_SNAPSHOT: '/CVM/CREATE_DISK_SNAPSHOT', // 云硬盘创建快照
+    EXPAND_DISK_SIZE: '/CVM/EXPAND_DISK_SIZE', // 云硬盘扩容
+    DETACH_DISK_FROM_VM: '/CVM/DETACH_DISK_FROM_VM', // 云硬盘卸载
+    DESTROY_OR_REFUND_DISK: '/CVM/DESTROY_OR_REFUND_DISK', // 云硬盘销毁/退还
+    DISK_RENAME: '/CVM/DISK_RENAME', // 硬盘重命名
+    CLONE_VM: '/CVM/CLONE_VM', // 克隆云主机
+    CONVERT_BILLING: '/CVM/CONVERT_BILLING', // 实例按量转包年包月
+  },
+  disk: {
+    CREATE_HD: '/DISK/CREATE_HD', // 创建云硬盘
+    RESET_HD_SIZE: '/DISK/RESET_HD_SIZE', // 升级云硬盘大小
+    ATTACH_HD_TO_VM: '/DISK/ATTACH_HD_TO_VM', // 挂载云硬盘到云主机
+    DETTACH_HD_FROM_VM: '/DISK/DETTACH_HD_FROM_VM', // 从云主机卸载云硬盘
+    REFUND_HD: '/DISK/REFUND_HD', // 退还云硬盘
+    RENAME_HD: '/DISK/RENAME_HD', // 重命名云硬盘
+    SET_HD_AUTO_RENEW: '/DISK/SET_HD_AUTO_RENEW', // 设置云硬盘自动续费
+    HD_RENEWAL: '/DISK/HD_RENEWAL', // 云硬盘续费
+    CONVERT_BILLING: '/DISK/CONVERT_BILLING', // 硬盘按量转包年包月
+  },
+  snapshot: {
+    CREATE_HD_SNAPSHOT: '/SNAPSHOT/CREATE_HD_SNAPSHOT', // 创建快照
+    CREATE_HD_FROM_SNAPSHOT: '/SNAPSHOT/CREATE_HD_FROM_SNAPSHOT', // 从快照创建云硬盘
+    EXPUNGE_SNAPSHOT: '/SNAPSHOT/EXPUNGE_SNAPSHOT', // 删除快照
+    ROLLBACK_SNAPSHOT: '/SNAPSHOT/ROLLBACK_SNAPSHOT', // 回滚快照
+    DELETE_SNAPSHOT_TACTICS: '/SNAPSHOT/DELETE_SNAPSHOT_TACTICS', // 删除快照策略
+    UPDATE_SNAPSHOT_TACTICS: '/SNAPSHOT/UPDATE_SNAPSHOT_TACTICS', // 修改快照策略
+  },
+  image: {
+    SET_IMAGE_NAME: '/IMAGE/SET_IMAGE_NAME', // 修改镜像名称
+    IMAGE_CREATE_CUSTOMIZE_VM: '/IMAGE/IMAGE_CREATE_CUSTOMIZE_VM', // 镜像创建自定义实例
+    IMAGE_CREATE_VM: '/IMAGE/IMAGE_CREATE_VM', // 镜像创建实例
+    IMAGE_DELETE_CUSTOMIZE_VM: '/IMAGE/IMAGE_DELETE_CUSTOMIZE_VM', // 镜像删除自定义镜像
+  },
+  sshKey: {
+    BAND_SSH: '/SSH/BAND_SSH', // 绑定SSH秘钥
+    UN_BAND_SSH: '/SSH/UN_BAND_SSH', // 解绑SSH秘钥
+    SET_SSH_NAME: '/SSH/SET_SSH_NAME', // 设置SSH秘钥名称
+    CREATE_SSH: '/SSH/CREATE_SSH', // 创建SSH秘钥
+    DELETE_SSH: '/SSH/DELETE_SSH', // 删除SSH秘钥
+  },
+  insRecovery: {
+    CVM_RECYCLE_BIN_CREATE_CUSTOM_IMAGE: '/CVM_RECYCLE_BIN/CVM_RECYCLE_BIN_CREATE_CUSTOM_IMAGE', // 实例回收站创建自定义镜像
+    CVM_RECYCLE_BIN_RECOVER: '/CVM_RECYCLE_BIN/CVM_RECYCLE_BIN_RECOVER', // 实例回收站恢复
+    CVM_RECYCLE_BIN_RELEASE: '/CVM_RECYCLE_BIN/CVM_RECYCLE_BIN_RELEASE', // 实例回收站释放
+  },
+  diskRecovery: {
+    DISK_RECYCLE_BIN_RECOVER: '/DISK_RECYCLE_BIN/DISK_RECYCLE_BIN_RECOVER', // 云硬盘回收站恢复
+    DISK_RECYCLE_BIN_RELEASE: '/DISK_RECYCLE_BIN/DISK_RECYCLE_BIN_RELEASE', // 云硬盘回收站释放
+  },
+  vpc: {
+    JUMP_CREATE_VM: '/NETWORK/JUMP_CREATE_VM', // 跳转创建云主机
+    CREATE_VPC: '/NETWORK/CREATE_VPC', // 创建VPC
+    DELETE_VPC: '/NETWORK/DELETE_VPC', // 删除VPC
+  },
+  subnet: {
+    CREATE_SUBNET: '/SUBNET/CREATE_SUBNET', // 新建子网
+    DELETE_SUBNET: '/SUBNET/DELETE_SUBNET', // 删除子网
+  },
+  eip: {
+    CREATE_EIP: '/NETWORK/CREATE_EIP', // 创建弹性公网IP
+    RELEASE_EIP: '/NETWORK/RELEASE_EIP', // 批量释放弹性公网IP
+    UPDATE_EIP: '/NETWORK/UPDATE_EIP', // 调整网络
+    RENEW_EIP: '/NETWORK/RENEW_EIP', // 续费EIP
+    MODIFY_EIP_RENEW_FLAG: '/NETWORK/MODIFY_EIP_RENEW_FLAG', // 修改EIP续费标识
+    BIND_EIP: '/NETWORK/BIND_EIP', // 绑定EIP
+    UNBIND_EIP: '/NETWORK/UNBIND_EIP', // 解绑EIP
+    ONE_RELEASE_EIP: '/NETWORK/ONE_RELEASE_EIP', // 释放弹性公网IP(单个)
+    APPLY_CHANGE_BILLING_MODE: '/NETWORK/APPLY_CHANGE_BILLING_MODE', // 申请变更计费模式
+  },
+  eni: {
+    CREATE_ENI: '/ENI/CREATE_ENI', // 创建网卡
+    ENI_BIND_INSTANCE: '/ENI/ENI_BIND_INSTANCE', // 绑定实例
+    ENI_UNBIND_INSTANCE: '/ENI/ENI_UNBIND_INSTANCE', // 解绑实例
+    DELETE_ENI_BULK: '/ENI/DELETE_ENI_BULK', // 批量删除
+    DELETE_ENI: '/ENI/DELETE_ENI', // 单个删除
+    ENI_ASSIGNMENT_INTRANET_IP: '/ENI/ENI_ASSIGNMENT_INTRANET_IP', // 分配内网ip
+    ENI_RELEASE_INTRANET_IP: '/ENI/ENI_RELEASE_INTRANET_IP', // 释放内网ip
+    ENI_BIND_EIP: '/ENI/ENI_BIND_EIP', // 绑定弹性公网ip
+    ENI_UNBIND_EIP: '/ENI/ENI_UNBIND_EIP', // 解绑弹性公网ip
+    ENI_BIND_SECURITY_GROUP: '/ENI/ENI_BIND_SECURITY_GROUP', // 配置关联安全组
+    ENI_EDIT_SECURITY_GROUP_SORT: '/ENI/ENI_EDIT_SECURITY_GROUP_SORT', // 排序安全组
+    ENI_UNBIND_SECURITY_GROUP: '/ENI/ENI_UNBIND_SECURITY_GROUP', // 解绑安全组
+    ENI_EDIT_SECURITY_GROUP_IN: '/ENI/ENI_EDIT_SECURITY_GROUP_IN', // 编辑安全组（入站）
+    ENI_EDIT_SECURITY_GROUP_OUT: '/ENI/ENI_EDIT_SECURITY_GROUP_OUT', // 编辑安全组（出站）
+  },
+  group: {
+    CREATE_SECURITY_GROUP: '/SECURITY_GROUP/CREATE_SECURITY_GROUP', // 创建安全组
+    MODIFY_SECURITY_GROUP_RULE: '/SECURITY_GROUP/MODIFY_SECURITY_GROUP_RULE', // 修改规则
+    MANAGE_SECURITY_GROUP_INSTANCES: '/SECURITY_GROUP/MANAGE_SECURITY_GROUP_INSTANCES', // 管理实例
+    CLONE_SECURITY_GROUP: '/SECURITY_GROUP/CLONE_SECURITY_GROUP', // 克隆
+    DELETE_SECURITY_GROUPS_BULK: '/SECURITY_GROUP/DELETE_SECURITY_GROUPS_BULK', // 批量删除
+    DELETE_SECURITY_GROUP_SINGLE: '/SECURITY_GROUP/DELETE_SECURITY_GROUP_SINGLE', // 单个删除
+    ADD_INBOUND_RULE: '/SECURITY_GROUP/ADD_INBOUND_RULE', // 添加入站规则
+    IMPORT_INBOUND_RULES: '/SECURITY_GROUP/IMPORT_INBOUND_RULES', // 导入入站规则
+    DELETE_INBOUND_RULES_BULK: '/SECURITY_GROUP/DELETE_INBOUND_RULES_BULK', // 批量删除入站规则
+    OPEN_ALL_INBOUND_TRAFFIC: '/SECURITY_GROUP/OPEN_ALL_INBOUND_TRAFFIC', // 一键放通入站规则
+    EDIT_INBOUND_RULE: '/SECURITY_GROUP/EDIT_INBOUND_RULE', // 编辑入站规则
+    MODIFY_INBOUND_RULE_PRIORITY: '/SECURITY_GROUP/MODIFY_INBOUND_RULE_PRIORITY', // 修改入站规则优先级
+    DELETE_INBOUND_RULE_SINGLE: '/SECURITY_GROUP/DELETE_INBOUND_RULE_SINGLE', // 单个删除入站规则
+    ADD_OUTBOUND_RULE: '/SECURITY_GROUP/ADD_OUTBOUND_RULE', // 添加出站规则
+    IMPORT_OUTBOUND_RULES: '/SECURITY_GROUP/IMPORT_OUTBOUND_RULES', // 导入出站规则
+    DELETE_OUTBOUND_RULES_BULK: '/SECURITY_GROUP/DELETE_OUTBOUND_RULES_BULK', // 批量删除出站规则
+    OPEN_ALL_OUTBOUND_TRAFFIC: '/SECURITY_GROUP/OPEN_ALL_OUTBOUND_TRAFFIC', // 一键放通出站规则
+    EDIT_OUTBOUND_RULE: '/SECURITY_GROUP/EDIT_OUTBOUND_RULE', // 编辑出站规则
+    MODIFY_OUTBOUND_RULE_PRIORITY: '/SECURITY_GROUP/MODIFY_OUTBOUND_RULE_PRIORITY', // 修改出站规则优先级
+    DELETE_OUTBOUND_RULE_SINGLE: '/SECURITY_GROUP/DELETE_OUTBOUND_RULE_SINGLE', // 单个删除出站规则
+    ADD_INSTANCE_TO_SECURITY_GROUP: '/SECURITY_GROUP/ADD_INSTANCE_TO_SECURITY_GROUP', // 安全组新增关联实例
+    REMOVE_INSTANCES_FROM_SECURITY_GROUP_BULK: '/SECURITY_GROUP/REMOVE_INSTANCES_FROM_SECURITY_GROUP_BULK', // 批量移出安全组
+    REMOVE_INSTANCE_FROM_SECURITY_GROUP_SINGLE: '/SECURITY_GROUP/REMOVE_INSTANCE_FROM_SECURITY_GROUP_SINGLE', // 单个移出安全组
+  },
+  ipGroup: {
+    CREATE_IP_ADDRESS_GROUP: '/IP_ADDRESS_GROUP/CREATE_IP_ADDRESS_GROUP', // 新建IP地址组
+    EDIT_IP_ADDRESS_GROUP: '/IP_ADDRESS_GROUP/EDIT_IP_ADDRESS_GROUP', // 编辑IP地址组
+    DELETE_IP_ADDRESS_GROUPS_BULK: '/IP_ADDRESS_GROUP/DELETE_IP_ADDRESS_GROUPS_BULK', // 批量删除IP地址组
+    DELETE_IP_ADDRESS_GROUP_SINGLE: '/IP_ADDRESS_GROUP/DELETE_IP_ADDRESS_GROUP_SINGLE', // 单个删除IP地址组
+    VIEW_ASSOCIATED_SECURITY_GROUPS: '/IP_ADDRESS_GROUP/VIEW_ASSOCIATED_SECURITY_GROUPS', // 查看关联安全组
+    ADD_IP_ADDRESS: '/IP_ADDRESS_GROUP/ADD_IP_ADDRESS', // 添加IP地址
+    DELETE_IP_ADDRESSES_BULK: '/IP_ADDRESS_GROUP/DELETE_IP_ADDRESSES_BULK', // 批量删除IP地址
+    DELETE_IP_ADDRESS_SINGLE: '/IP_ADDRESS_GROUP/DELETE_IP_ADDRESS_SINGLE', // 单个删除IP地址
+  },
+  pkg: {
+    BUY_TRAFFIC_PACKAGE: '/SHARE_TRAFFIC_PACKAGE/BUY_TRAFFIC_PACKAGE', // 购买流量包
+    ADD_EIP: '/SHARE_TRAFFIC_PACKAGE/ADD_EIP', // 添加弹性公网ip
+    REMOVE_EIP: '/SHARE_TRAFFIC_PACKAGE/REMOVE_EIP', // 移出弹性公网ip
+    ALL_REMOVE_EIP: '/SHARE_TRAFFIC_PACKAGE/ALL_REMOVE_EIP', // 批量移出弹性公网ip
+  },
+  eipRecovery: {
+    EIP_RECYCLE_BIN_RECOVER: '/EIP_RECYCLE_BIN/EIP_RECYCLE_BIN_RECOVER', // EIP回收站恢复
+    EIP_RECYCLE_BIN_RELEASE: '/EIP_RECYCLE_BIN/EIP_RECYCLE_BIN_RELEASE', // EIP回收站释放
+  },
+}
+
+export const useCvmAndNetworkPermission = (permConfig: Reactive<{ moduleId: number; regionId: number }>) => {
+  const permissions = ref<string[]>([]) // 当前地域的模块所有权限集合
+
+  // 是否有权限
+  const checkPermission = (perm: string | string[]) => {
+    if (perm instanceof Array) {
+      return perm.map(el => permissions.value.includes(el))
+    } else {
+      return permissions.value.includes(perm)
+    }
+  }
+
+  // 用户端根据模块id以及地域id查询动态配置信息
+  const serverDynamicConfigList = async () => {
+    try {
+      const res = await _serverDynamicConfigList(permConfig)
+
+      console.log(`_serverDynamicConfigList===>`, permConfig)
+      console.log(`用户端根据模块id以及地域id查询动态配置信息===>`, res)
+
+      if (res.success) {
+        permissions.value = res.data.map(el => el.code)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // 监听地域更新
+  watch(
+    permConfig,
+    () => {
+      if (permConfig.regionId) {
+        serverDynamicConfigList()
+      }
+    },
+    {
+      immediate: true,
+      deep: true,
+    },
+  )
+
+  return {
+    checkPermission,
+    permissions,
+  }
+}

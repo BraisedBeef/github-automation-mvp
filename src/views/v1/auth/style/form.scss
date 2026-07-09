@@ -1,0 +1,58 @@
+$defaultMb: 20px;
+$height: 40px;
+
+@mixin formStyles($mb: $defaultMb) {
+  :deep(.el-form) {
+    .el-form-item {
+      height: $height;
+      margin-bottom: $mb;
+
+      .el-form-item__label {
+        height: 100% !important;
+        line-height: $height;
+      }
+
+      .el-form-item__content {
+        .el-input {
+          height: 100% !important;
+
+          // height: $height;
+
+          // 去除上/左右边框
+          .el-input__wrapper {
+            height: 100% !important;
+            padding: 0;
+            border-bottom: 1px solid var(--el-input-border-color, var(--el-border-color));
+            border-radius: 0;
+            box-shadow: none !important;
+
+            // 实现下边框hover效果
+            &:hover {
+              border-bottom: 1px solid var(--primary-color);
+            }
+          }
+        }
+
+        .el-form-item__error {
+          left: 0 !important;
+        }
+      }
+    }
+
+    // 聚焦
+    .is-focus {
+      border-bottom: 1px solid var(--primary-color) !important;
+    }
+
+    // 校验错误
+    .is-error {
+      .el-input__wrapper {
+        border-bottom: 1px solid var(--error-color) !important;
+      }
+
+      .is-focus {
+        box-shadow: none !important;
+      }
+    }
+  }
+}

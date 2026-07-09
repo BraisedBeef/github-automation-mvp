@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overdue Payment Instructions</title>
+  </head>
+  <style>
+    p{
+      margin: 0;
+    }
+    body {
+      padding: 40px 120px;
+    }
+    .title-box {
+      text-indent: 0;
+      text-align: center;
+    }
+    .title-box span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+       /* font-weight: 500; */
+      font-size: 27px;
+      color: #000000;
+      line-height: 38px;
+      text-align: right;
+      font-style: normal;
+    }
+    /* nav区域 */
+    .nav-box {
+      margin-top: 40px;
+    }
+    .nav-box .nav span {
+      text-align: left;
+      font-style: normal;
+      color: #000000;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 26px;
+      font-family:
+        PingFangSC,
+        PingFang SC;
+    }
+    /* 小标题 */
+    .son-title {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .son-title span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 21px;
+       /* font-weight: 500; */
+      line-height: 30px;
+      text-indent: 0;
+    }
+    /* 内容区域 */
+    .content-box {
+      margin-top: 40px;
+    }
+    .content-box span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 21px;
+      line-height: 30px;
+      text-indent: 0;
+      text-align: center;
+    }
+    /* 内容标题 */
+    .content-title span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 21px;
+      line-height: 30px;
+      text-indent: 0;
+      text-align: center;
+    }
+    /* 内容文字 */
+    .content-txt span{
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 16px;
+      line-height: 30px;
+      text-indent: 0;
+    }
+  </style>
+  <body>
+    <!-- 标题 -->
+    <p class="title-box">
+      <span>Overdue Payment Instructions</span>
+    </p>
+    <!-- nav -->
+    <div class="nav-box">
+      <div class="nav">
+        <span
+          >This document outlines two scenarios of overdue payments: account arrears and arrears for cloud resources bound to EIP.</span
+        >
+      </div>
+    </div>
+    <div class="content-box">
+        <p class="content-title">
+          <span>Account Arrears</span>
+        </p>
+        <p class="content-txt"><span>The rules for account arrears vary depending on the billing mode of public network fees, as detailed below:</span></p>
+    </div>
+    <!-- ********************************************* 列 *************************************************** -->
+    <div class="content-box">
+      <!-- 小标题 -->
+      <p class="content-title">
+        <span>Annual/Monthly Subscription Billing</span>
+      </p>
+      <!-- 内容 -->
+      <p class="content-txt"><span>Billing based on annual or monthly bandwidth subscriptions is unaffected by account arrears and is only related to the expiration time of the resource:</span></p>
+      <p class="content-txt"><span>Starting 7 days before the expiration of the annual/monthly subscription bandwidth, the system will send expiration alerts and renewal reminders. If you do not renew the subscription before the EIP's expiration date, the EIP will be released.</span></p>
+    </div>
+    <!-- ********************************************* 列 *************************************************** -->
+    <div class="content-box">
+      <!-- 小标题 -->
+      <p class="content-title">
+        <span>Pay-as-You-Go Traffic or Hourly Bandwidth Billing</span>
+      </p>
+      <!-- 内容 -->
+      <p class="content-txt"><span>For unbound or bound EIP in arrears for more than 1 hour the service will be suspended, and billing will stop.</span></p>
+      <p class="content-txt"><span>Unbound EIP will be released.</span></p>
+      <p class="content-txt"><span>EIP bound to CVM will be unbound and released.</span></p>
+    </div>
+    <!-- ********************************************* 列 *************************************************** -->
+    <div class="content-box">
+      <p class="content-title">
+        <span>Arrears for Bound Cloud Resources</span>
+      </p>
+      <!-- 内容 -->
+      <p class="content-txt"><span>If the cloud resource bound to an EIP incurs arrears, the EIP will automatically unbind and switch to idle billing status. If you no longer need it, please release the EIP from the console as soon as possible.</span></p>
+    </div>
+  </body>
+</html>

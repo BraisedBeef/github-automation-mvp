@@ -1,0 +1,54 @@
+.fln {
+  flex-wrap: nowrap !important;
+}
+
+// .data-list {
+//   justify-content: space-between;
+
+//   .data-item {
+//     justify-content: space-between;
+//     padding: 20px 30px;
+//     flex: 1;
+//     min-width: 0;
+//     height: 140px;
+//     margin-right: 20px;
+//     .title {
+//       font-size: 14px;
+//       font-family:
+//         PingFang SC,
+//         PingFang SC;
+//       font-weight: 400;
+//       color: var(--primay-color);
+//     }
+
+//     .speed {
+//       align-items: center;
+//       color: var(--el-color-primary);
+
+//       .count {
+//         font-size: 36px;
+//       }
+//       .unit {
+//         font-size: 36px;
+//       }
+//     }
+
+//     .time {
+//       color: #999;
+//     }
+//   }
+//   .data-item:last-child {
+//     margin-right: 0;
+//   }
+// }
+
+.select-chart {
+  .select {
+    align-items: flex-end;
+  }
+}
+
+.big-chart {
+  width: 100%;
+  height: 300px;
+}

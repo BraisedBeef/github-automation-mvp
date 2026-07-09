@@ -1,0 +1,108 @@
+.text-over {
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table-td_tooltip {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.text-error {
+  flex-shrink: 0;
+  color: var(--error-color) !important;
+}
+
+.text-success {
+  flex-shrink: 0;
+  color: var(--success-color) !important;
+}
+
+.text-warning {
+  flex-shrink: 0;
+  color: var(--warning-color) !important;
+}
+
+.text-primary {
+  flex-shrink: 0;
+  color: var(--primary-color) !important;
+}
+
+.tip-text-warning {
+  flex-shrink: 0;
+  color: #f7b500 !important;
+}
+
+.bg-error {
+  background-color: var(--error-color) !important;
+}
+
+.bg-success {
+  background-color: var(--success-color) !important;
+}
+
+.bg-warning {
+  background-color: var(--warning-color) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.cat-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 距左自适应 => css: @extends .ml-at;
+.ml-at {
+  margin-left: auto;
+}
+
+.mr-at {
+  margin-right: auto;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.wh-full {
+  width: 100%;
+  height: 100%;
+}
+
+.notice-box {
+  padding: 10px;
+  font-size: 14px;
+  color: var(--primary-color);
+  background-color: rgb(57 74 255 / 5%);
+  border-radius: 4px;
+}
+
+.custom-form-item-label {
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+  }
+}
+
+.tableheader-withicon {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}

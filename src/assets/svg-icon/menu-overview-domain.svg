@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>layout-outlined</title>
+    <g id="控制台" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="域名-概览-" transform="translate(-20.000000, -80.000000)" fill="currentColor" fill-rule="nonzero">
+            <g id="侧边栏/实例" transform="translate(0.000000, 60.000000)">
+                <g id="layout-outlined" transform="translate(20.000000, 20.000000)">
+                    <rect id="矩形" opacity="0" x="0" y="0" width="20" height="20"></rect>
+                    <path d="M17.1875,2.1875 L2.8125,2.1875 C2.46679688,2.1875 2.1875,2.46679688 2.1875,2.8125 L2.1875,17.1875 C2.1875,17.5332031 2.46679688,17.8125 2.8125,17.8125 L17.1875,17.8125 C17.5332031,17.8125 17.8125,17.5332031 17.8125,17.1875 L17.8125,2.8125 C17.8125,2.46679688 17.5332031,2.1875 17.1875,2.1875 Z M3.59375,3.59375 L6.25,3.59375 L6.25,16.40625 L3.59375,16.40625 L3.59375,3.59375 Z M16.40625,16.40625 L7.5,16.40625 L7.5,7.5 L16.40625,7.5 L16.40625,16.40625 Z M7.5,6.25 L7.5,3.59375 L16.40625,3.59375 L16.40625,6.25 L7.5,6.25 Z" id="形状"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

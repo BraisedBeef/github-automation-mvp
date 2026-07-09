@@ -1,0 +1,314 @@
+.page-box {
+  background: #fff;
+}
+
+.overlay-shadow {
+  position: relative;
+  z-index: 2;
+  background-color: #fff;
+}
+
+.pd0-20 {
+  padding: 0 20px;
+
+  // 表格头部
+}
+
+.custom-table-header {
+  display: flex;
+  align-items: center;
+  color: #555;
+
+  .table-sort {
+    width: 14px;
+    height: 14px;
+    margin-left: 4px;
+  }
+}
+
+.table-handle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  .el-link {
+    justify-content: flex-start;
+    margin-right: 24px; // 固定右边距
+  }
+}
+
+.ellipsis {
+  flex: 1;
+  width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: nowrap;
+}
+
+.card-wrapper_shadow {
+  box-shadow: 0 2px 8px 0 rgb(0 36 136 / 7%);
+}
+
+.cdn {
+  .base-btn {
+    .el-button {
+      min-width: 60px;
+    }
+  }
+
+  .is-link {
+    padding: 0 !important;
+  }
+}
+
+.df {
+  display: flex;
+}
+
+.dif {
+  display: inline-flex;
+}
+
+.fln {
+  flex-wrap: nowrap;
+}
+
+.jc {
+  justify-content: center;
+}
+
+.ac {
+  align-items: center;
+}
+
+.fdc {
+  flex-direction: column;
+}
+
+.jsb {
+  justify-content: space-between;
+}
+
+.jfs {
+  justify-content: flex-start;
+}
+
+.jfe {
+  justify-content: flex-end;
+}
+
+.bgcf {
+  background-color: #fff;
+}
+
+.mr4 {
+  margin-right: 4px !important;
+}
+
+.ml4 {
+  margin-left: 4px !important;
+}
+
+.mt4 {
+  margin-top: 4px !important;
+}
+
+.mt6 {
+  margin-top: 6px !important;
+}
+
+.mt10 {
+  margin-top: 10px !important;
+}
+
+.mb10 {
+  margin-bottom: 10px !important;
+}
+
+.mr5 {
+  margin-right: 5px !important;
+}
+
+.mr10 {
+  margin-right: 10px !important;
+}
+
+.ml10 {
+  margin-left: 10px !important;
+}
+
+.ml14 {
+  margin-left: 14px !important;
+}
+
+.mr14 {
+  margin-right: 14px !important;
+}
+
+.mr20 {
+  margin-right: 20px !important;
+}
+
+.ml20 {
+  margin-left: 20px !important;
+}
+
+.mt20 {
+  margin-top: 20px !important;
+}
+
+.mb20 {
+  margin-bottom: 20px !important;
+}
+
+.max-400 {
+  max-width: 400px;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.auto-width {
+  flex: 1;
+  width: 0;
+}
+
+.pd20 {
+  padding: 20px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+// 表格标题文字提示样式
+.table-header_tooltip {
+  max-width: 244px !important;
+  color: #222 !important;
+  background: #fff !important;
+  border: none !important;
+  box-shadow:
+    0 9px 28px 8px rgb(0 0 0 / 5%),
+    0 6px 16px 0 rgb(0 0 0 / 8%),
+    0 3px 6px -4px rgb(0 0 0 / 12%) !important;
+}
+
+.table-header_tooltip .el-popper__arrow::before {
+  background-color: #fff !important;
+  border-color: #fff !important;
+}
+
+.line1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 允许长单词换行
+.line-break {
+  word-break: break-all; /* 允许长单词换行 */
+  word-wrap: break-word; /* 允许长单词换行 */
+  overflow-wrap: break-word; /* 允许长单词换行 */
+  white-space: normal; /* 允许文本换行 */
+}
+
+// 超出3行省略
+.line3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+}
+
+.cdn-notification {
+  p {
+    word-break: break-all;
+  }
+}
+
+// 表单多语言label超出样式处理
+.multilingual_form {
+  .el-form-item {
+    display: block;
+
+    .el-form-item__error {
+      left: 0 !important;
+    }
+  }
+}
+
+// 阴影
+.shadow {
+  box-shadow: 0 0 5px 0 rgb(165 196 239 / 52%);
+}
+
+.icon-hover {
+  color: var(--sub-text);
+  cursor: pointer !important;
+  transition: all 0.2s;
+
+  &:hover {
+    color: var(--primary-color);
+  }
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.notification-success {
+  background-color: #e2fff0 !important;
+
+  * {
+    color: var(--success-color);
+  }
+
+  .el-notification__closeBtn {
+    color: var(--success-color);
+  }
+}
+
+.notification-failed {
+  background-color: #ffebeb !important;
+
+  * {
+    color: var(--error-color);
+  }
+
+  .el-notification__closeBtn {
+    color: var(--error-color);
+  }
+}
+
+.font-bold {
+  font-weight: 700 !important;
+}
+
+.ae {
+  align-items: end;
+}
+
+.auto-wrap {
+  word-break: break-all;
+  white-space: normal;
+}
+
+.overflow-scroll {
+  width: 100%;
+  overflow-x: auto;
+}

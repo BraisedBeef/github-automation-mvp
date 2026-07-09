@@ -1,0 +1,330 @@
+<template>
+  <div class="page forget-pwd-page-v2">
+    <!-- title -->
+    <div v-if="isV2Theme" class="forget-pwd-page-v2__header">
+      <h1>{{ t('login.forgotPasswordTitle') }}</h1>
+      <p>{{ t('login.forgotPasswordDescription') }}</p>
+    </div>
+    <LoginTitle v-else style="margin-bottom: 28px" :title="t('login.codeTitle')" />
+
+    <el-form ref="forgetPwdFormRef" :model="forgetPwdForm" :rules="rules" label-position="left">
+      <!-- 邮箱 -->
+      <el-form-item prop="email">
+        <el-input
+          v-model.trim="forgetPwdForm.email"
+          :placeholder="isV2Theme ? t('login.emailAddressPlaceholder') : t('login.emailPlaceholder')"
+          style="width: 100%"
+          @blur="emailBlur"
+        />
+      </el-form-item>
+      <!-- 验证码 -->
+      <el-form-item prop="code" class="code-wrap">
+        <div class="w-full h-full">
+          <el-input
+            v-model.trim="forgetPwdForm.code"
+            :max-length="6"
+            :placeholder="isV2Theme ? t('login.emailCodePlaceholder') : t('login.codePlaceholder')"
+          />
+          <VerifyCodeBtn :verify-fun="getCode" :active="active" :border="false" class="verifyCodeBtn" />
+        </div>
+      </el-form-item>
+      <!-- 下一步 -->
+      <el-form-item>
+        <el-button
+          type="primary"
+          class="forget-pwd-btn"
+          style="width: 100%"
+          :loading="loading"
+          @click="submit(forgetPwdFormRef)"
+        >
+          {{ t('common.next') }}
+        </el-button>
+      </el-form-item>
+
+      <el-divider>
+        {{ t('login.or') }}
+      </el-divider>
+
+      <!-- 返回登录 -->
+      <el-form-item>
+        <div class="default-btn cat-flex" @click="pushRoute({ name: 'Login' })">
+          {{ t('login.backLogin') }}
+        </div>
+      </el-form-item>
+    </el-form>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { pushRoute } from '@/utils/router-jump'
+import LoginTitle from '../components/login-title.vue'
+import { _noAuthSendMail, _verifyEmailCode } from '@/apis/login'
+import t from '@/utils/i18n'
+import { FormInstance, FormRules } from 'element-plus/es'
+import { EMIAL_REG } from '../config'
+import { message } from '@/utils/message'
+import { useThemeVersion } from '@/hooks/use-theme-version'
+
+interface ForgetPwdForm {
+  email: string
+  code: string
+}
+
+const forgetPwdFormRef = ref<FormInstance>()
+const { isV2Theme } = useThemeVersion()
+const loading = ref<boolean>(false)
+const forgetPwdForm = reactive<ForgetPwdForm>({
+  email: '',
+  code: '',
+})
+const active = ref<boolean>(false) // 验证码按钮是否激活
+const phonePre = ref<string>('86')
+
+// 校验邮箱
+const checkEmail = (rule: any, value: any, callback: any) => {
+  if (!value) {
+    return callback('')
+  } else if (!EMIAL_REG.test(value)) {
+    return callback(new Error(t('common.formatErr')))
+  } else {
+    callback()
+  }
+}
+
+const rules = reactive<FormRules<ForgetPwdForm>>({
+  email: [{ required: true, validator: checkEmail, trigger: 'blur' }],
+  code: [{ required: true, message: '', trigger: 'blur' }],
+})
+
+const emailBlur = () => {}
+
+// 获取验证码
+const getCode = async () => {
+  console.log(`获取验证码===>`)
+
+  const res = await _noAuthSendMail({
+    email: forgetPwdForm.email,
+    type: 2,
+  })
+
+  if (res.success) {
+    message.success(t('common.codeSent'))
+    return true
+  } else {
+    message.warning(res.msg)
+    return false
+  }
+}
+
+// 验证邮箱验证码
+const verifyEmailCode = async () => {
+  try {
+    loading.value = true
+    const res = await _verifyEmailCode({
+      email: forgetPwdForm.email,
+      code: forgetPwdForm.code,
+      type: 2,
+    })
+
+    console.log(`verifyEmailCode res ===>`, res)
+
+    if (res.success) {
+      pushRoute({
+        name: 'ResetPwd',
+        query: {
+          account: forgetPwdForm.email,
+          code: forgetPwdForm.code,
+        },
+      })
+    } else {
+      message.warning(res.msg)
+    }
+  } catch (error) {
+    console.log(error)
+  } finally {
+    loading.value = false
+  }
+}
+
+// 下一步
+const submit = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate(async (valid, fields) => {
+    if (valid) {
+      verifyEmailCode()
+    } else {
+      console.log('error submit!', fields)
+    }
+  })
+}
+
+watch(
+  () => forgetPwdForm.email,
+  value => {
+    // forgetPwdFormRef.value?.validateField('email', valid => {
+    //   console.log(`validateField===>`, valid)
+    //   active.value = valid
+    // })
+
+    active.value = EMIAL_REG.test(value) ? true : false
+  },
+)
+</script>
+
+<style scoped lang="scss">
+@use '../style/page';
+@use '../style/btn';
+@use '../style/form.scss' as form;
+@use '../style/code';
+@include form.formStyles;
+</style>
+
+<style lang="scss">
+.theme-v2 .forget-pwd-page-v2 {
+  position: relative;
+  top: auto;
+  left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 640px;
+  min-height: 0;
+  padding: 48px;
+  font-family: 'Noto Sans CJK SC', 'PingFang SC', sans-serif;
+  background: #fff;
+  border-radius: 0;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 10%);
+  transform: none;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+
+    h1,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 32px;
+      color: #191c23;
+    }
+
+    p {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      color: #50596a;
+    }
+  }
+
+  .el-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .el-form-item {
+    height: 48px;
+    margin: 0 !important;
+
+    .el-form-item__content,
+    .el-input {
+      width: 100%;
+      height: 48px !important;
+      line-height: 24px;
+    }
+
+    .el-input__wrapper {
+      height: 48px !important;
+      padding: 12px 16px !important;
+      border: 1px solid #dcdfe6;
+      border-radius: 0;
+      box-shadow: none !important;
+
+      &:hover {
+        border-color: #06f;
+      }
+
+      &.is-focus {
+        border: 1px solid #06f !important;
+      }
+    }
+
+    .el-input__inner {
+      height: 24px;
+      font-family: inherit;
+      font-size: 16px;
+      line-height: 24px;
+      color: #191c23;
+
+      &::placeholder {
+        color: #828b9c;
+      }
+    }
+
+    &.is-error .el-input__wrapper {
+      border: 1px solid var(--error-color) !important;
+    }
+  }
+
+  .code-wrap {
+    .el-input__wrapper {
+      padding: 12px 132px 12px 16px !important;
+    }
+
+    .verifyCodeBtn {
+      height: 48px;
+      padding: 0 16px;
+      margin-left: 0;
+      font-family: inherit;
+      font-size: 16px;
+      line-height: 24px;
+      color: #06f;
+      border-radius: 0;
+    }
+  }
+
+  .forget-pwd-btn {
+    width: 100%;
+    height: 48px !important;
+    padding: 12px 16px;
+    margin: 0;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 24px;
+    background: #06f;
+    border-color: #06f;
+    border-radius: 0 !important;
+  }
+
+  .el-divider {
+    height: 22px;
+    margin: 0;
+    border-color: #dcdfe6;
+
+    .el-divider__text {
+      padding: 0 8px;
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 22px;
+      color: #191c23;
+    }
+  }
+
+  .default-btn {
+    width: 100%;
+    height: 48px;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 24px;
+    color: #191c23;
+    border: 1px solid #dcdfe6;
+    border-radius: 0 !important;
+  }
+}
+</style>

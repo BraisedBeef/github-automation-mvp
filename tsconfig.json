@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES2020", // 指定编译后的ECMAScript版本
+    "useDefineForClassFields": true, //将 class 声明中的字段语义从 [[Set]] 变更到 [[Define]]
+    "module": "ESNext", // 指定要使用的模板标准
+    "moduleResolution": "Node", //用于选择模块解析策略，有'node'和'classic'两种
+    "jsx": "preserve", // 指定jsx代码用于的开发环境
+    "jsxImportSource": "vue",
+    "resolveJsonModule": true, //包含导入的模块.json的扩展
+    "isolatedModules": false,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    // 用来指定需要包含的模块，只有在这里列出的模块声明文件才会被加载进来
+    "skipLibCheck": true, // 用来控制是否在编译时进行库文件检查的
+    "noEmit": true,
+    /* Linting */
+    "strict": false, // 开启严格模式，检查类型声明和赋值...是否合法
+    "noUnusedLocals": false, // 检查是否存在未使用的变量
+    "noUnusedParameters": false, // 检查是否存在未使用的函数参数
+    "noFallthroughCasesInSwitch": true, // 检查switch语句中是否存在break
+    "noImplicitAny": false, // 不允许变量或函数参数具有隐式any类型
+    "noImplicitReturns": false, // 函数所有分支必须有返回值
+    "noImplicitThis": true, // this必须有明确类型
+    "baseUrl": "./", // 用于设置模块名到基于baseUrl的路径映射
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["vitest/globals"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.d.ts", "types/**/*.d.ts"],
+  // 不编译某些文件
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}

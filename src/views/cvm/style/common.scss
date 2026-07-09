@@ -1,0 +1,45 @@
+.disabled-text {
+  font-family: PingFangSC, 'PingFang SC';
+  font-size: 14px;
+  font-weight: 400;
+  color: #999;
+}
+
+.select-btn {
+  color: #fff;
+  background-color: var(--btn-hover);
+  border-color: var(--btn-hover);
+
+  // 触摸
+  &:hover {
+    color: #fff;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+
+  // 点击
+  &:focus {
+    color: #fff;
+    background-color: var(--btn-hover);
+    border-color: var(--btn-hover);
+  }
+}
+
+:deep(.el-slider__marks-stop) {
+  background: transparent;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingAnimate {
+  color: var(--primary-color);
+  animation: spin 1s linear infinite;
+}

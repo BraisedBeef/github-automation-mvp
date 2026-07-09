@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="32px" viewBox="0 0 30 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient x1="54.2508871%" y1="94.0502454%" x2="44.3683543%" y2="5.87065919%" id="linearGradient-1">
+            <stop stop-color="#972570" offset="0%"></stop>
+            <stop stop-color="#D63D79" offset="38.6128%"></stop>
+            <stop stop-color="#DB3F7A" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="32.781928%" y1="78.3112325%" x2="885.144373%" y2="551.132038%" id="linearGradient-2">
+            <stop stop-color="#972570" offset="0%"></stop>
+            <stop stop-color="#D63D79" offset="38.6128%"></stop>
+            <stop stop-color="#DB3F7A" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="13.8706315%" y1="53.5015309%" x2="-711.209284%" y2="1064.54971%" id="linearGradient-3">
+            <stop stop-color="#972570" offset="0%"></stop>
+            <stop stop-color="#D63D79" offset="38.6128%"></stop>
+            <stop stop-color="#DB3F7A" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="87.3520193%" y1="94.0502314%" x2="87.3520193%" y2="6.5449439%" id="linearGradient-4">
+            <stop stop-color="#DB3F7A" offset="0%"></stop>
+            <stop stop-color="#D63D79" offset="61.3872%"></stop>
+            <stop stop-color="#972570" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="67.2787982%" y1="21.7628431%" x2="5147.55702%" y2="-3967.48546%" id="linearGradient-5">
+            <stop stop-color="#972570" offset="0%"></stop>
+            <stop stop-color="#D63D79" offset="38.6128%"></stop>
+            <stop stop-color="#DB3F7A" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="86.1903157%" y1="46.5264085%" x2="1507.44044%" y2="979.137474%" id="linearGradient-6">
+            <stop stop-color="#972570" offset="0%"></stop>
+            <stop stop-color="#D63D79" offset="38.6128%"></stop>
+            <stop stop-color="#DB3F7A" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon" transform="translate(-1090.000000, -231.000000)">
+            <g id="编组-2" transform="translate(1090.000000, 232.000000)">
+                <polygon id="路径-6" fill="url(#linearGradient-1)" points="3 8.11 11.27 22.36 3 22.37"></polygon>
+                <polygon id="路径-6" stroke-opacity="0" stroke="#000000" points="11.27 22.36 3 22.37 3 8.11"></polygon>
+                <polygon id="路径-6" fill="url(#linearGradient-2)" points="15.34 1 7.14 15.28 3 8.12"></polygon>
+                <polygon id="路径-6" stroke-opacity="0" stroke="#000000" points="7.14 15.28 3 8.12 15.34 1"></polygon>
+                <polygon id="路径-6" fill="url(#linearGradient-3)" points="27.67 8.12 11.2 8.16 15.33 1"></polygon>
+                <polygon id="路径-6" stroke-opacity="0" stroke="#000000" points="11.2 8.16 15.33 1 27.67 8.12"></polygon>
+                <path d="M27.67,15.2 L27.67,22.37 L23.51,15.2 L27.67,15.2 Z M27.67,8.11 L27.67,13.35 L22.43,13.35 L19.4,8.12 L27.67,8.11 Z" id="形状结合" fill="url(#linearGradient-4)"></path>
+                <path d="M27.67,22.37 L23.51,15.2 L27.67,15.2 L27.67,22.37 Z M27.67,13.35 L22.43,13.35 L19.4,8.12 L27.67,8.11 L27.67,13.35 Z" id="形状结合" stroke-opacity="0" stroke="#000000"></path>
+                <polygon id="路径-6" fill="url(#linearGradient-5)" points="15.33 29.48 23.53 15.2 27.67 22.36"></polygon>
+                <polygon id="路径-6" stroke-opacity="0" stroke="#000000" points="23.53 15.2 27.67 22.36 15.33 29.48"></polygon>
+                <polygon id="路径-6" fill="url(#linearGradient-6)" points="3 22.36 19.47 22.32 15.34 29.48"></polygon>
+                <polygon id="路径-6" stroke-opacity="0" stroke="#000000" points="19.47 22.32 15.34 29.48 3 22.36"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

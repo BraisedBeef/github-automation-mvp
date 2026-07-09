@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="蒙版" width="16" height="16" transform="translate(-16)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="编组_6备份" data-name="编组 6备份" transform="translate(16)">
+    <rect id="蒙版-2" data-name="蒙版" width="16" height="16" transform="translate(-16)" fill="none"/>
+    <g id="编组_6备份-2" data-name="编组 6备份" clip-path="url(#clip-path)">
+      <g id="编组_6" data-name="编组 6" transform="translate(-18.753 5.525) rotate(-45)">
+        <path id="排除_18" data-name="排除 18" d="M19417.256,15920.248a5.457,5.457,0,0,1-5.5-5.4,5.4,5.4,0,0,1,2.754-4.675v-1.628a1.8,1.8,0,1,1,0-3.6,2.747,2.747,0,0,1,5.494,0v5.225a5.393,5.393,0,0,1,2.754,4.675A5.454,5.454,0,0,1,19417.256,15920.248Zm-2.75-13.941a.459.459,0,0,0-.463.443.465.465,0,0,0,.375.449l.088,0h1.375v3.748l-.687.39a4.05,4.05,0,0,0-2.066,3.515,4.127,4.127,0,0,0,8.252,0,4.04,4.04,0,0,0-1.881-3.407l-.186-.107-.682-.39-.006-6a1.374,1.374,0,0,0-2.738-.132l-.006.132v1.354Zm2.6,10.334a2,2,0,1,1,2-2A2,2,0,0,1,19417.109,15916.641Z" transform="translate(-19411.754 -15902.252)" fill="currentColor" stroke="rgba(0,0,0,0)" stroke-miterlimit="10" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

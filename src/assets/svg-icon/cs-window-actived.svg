@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon" transform="translate(-1389.000000, -164.000000)" fill-rule="nonzero">
+            <g id="编组-8" transform="translate(1364.000000, 91.000000)">
+                <g id="编组-37备份" transform="translate(25.000000, 73.000000)">
+                    <g id="Windows-weak" transform="translate(0.000490, 0.000000)" fill="#98A3B7">
+                        <polygon id="路径" points="12.1666 12.1644 1.77635684e-15 12.1644 1.77635684e-15 8.8817842e-16 12.1666 8.8817842e-16"></polygon>
+                        <polygon id="路径" points="25.6 12.1644 13.4336 12.1644 13.4336 8.8817842e-16 25.6 8.8817842e-16"></polygon>
+                        <polygon id="路径" points="12.1663 25.5998 1.77635684e-15 25.5998 1.77635684e-15 13.4355 12.1663 13.4355"></polygon>
+                        <polygon id="路径" points="25.6 25.5998 13.4336 25.5998 13.4336 13.4355 25.6 13.4355"></polygon>
+                    </g>
+                    <g id="Windows">
+                        <polygon id="路径" fill="#F1511B" points="12.16669 12.1644 8.8817842e-16 12.1644 8.8817842e-16 8.8817842e-16 12.16669 8.8817842e-16"></polygon>
+                        <polygon id="路径" fill="#80CC28" points="25.59999 12.1644 13.43359 12.1644 13.43359 8.8817842e-16 25.59999 8.8817842e-16"></polygon>
+                        <polygon id="路径" fill="#00ADEF" points="12.16629 25.5998 0 25.5998 0 13.4355 12.16629 13.4355"></polygon>
+                        <polygon id="路径" fill="#FBBC09" points="25.59999 25.5998 13.43359 25.5998 13.43359 13.4355 25.59999 13.4355"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

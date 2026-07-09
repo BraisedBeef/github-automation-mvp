@@ -1,0 +1,115 @@
+name: Issue Agent
+
+on:
+  issues:
+    types:
+      - labeled
+      - reopened
+      - edited
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  solve-issue:
+    if: contains(github.event.issue.labels.*.name, 'agent')
+    runs-on: ubuntu-latest
+    env:
+      AGENT_API_URL: ${{ secrets.AGENT_API_URL }}
+      AGENT_API_TOKEN: ${{ secrets.AGENT_API_TOKEN }}
+      AGENT_VALIDATION_COMMAND: ${{ vars.AGENT_VALIDATION_COMMAND }}
+      ENABLE_AUTO_MERGE: ${{ vars.ENABLE_AUTO_MERGE || 'false' }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build issue context
+        run: node scripts/collect-issue-context.mjs
+
+      - name: Call Agent API
+        id: agent
+        run: node scripts/request-agent-fix.mjs
+
+      - name: Publish workflow summary
+        if: always()
+        run: node scripts/render-workflow-summary.mjs
+
+      - name: Comment when issue is skipped
+        if: steps.agent.outputs.can_handle != 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('node:fs');
+            const response = JSON.parse(fs.readFileSync('.agent-output/response.json', 'utf8'));
+            const issue_number = context.payload.issue.number;
+            const body = [
+              'Agent did not open a pull request for this issue.',
+              '',
+              response.summary || 'No summary was returned by the Agent API.',
+              '',
+              'Tip: add more reproduction details or narrow the scope before retrying.'
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              body
+            });
+
+      - name: Apply generated patch
+        if: steps.agent.outputs.can_handle == 'true'
+        run: git apply --index --whitespace=fix .agent-output/issue.patch
+
+      - name: Run validation command
+        if: steps.agent.outputs.can_handle == 'true' && env.AGENT_VALIDATION_COMMAND != ''
+        run: ${{ env.AGENT_VALIDATION_COMMAND }}
+
+      - name: Create pull request
+        if: steps.agent.outputs.can_handle == 'true'
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: ${{ steps.agent.outputs.commit_message }}
+          branch: ${{ steps.agent.outputs.branch_name }}
+          title: ${{ steps.agent.outputs.pr_title }}
+          body: ${{ steps.agent.outputs.pr_body }}
+          labels: agent-generated
+          delete-branch: true
+
+      - name: Comment with pull request link
+        if: steps.agent.outputs.can_handle == 'true' && steps.cpr.outputs.pull-request-number != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue_number = context.payload.issue.number;
+            const prNumber = '${{ steps.cpr.outputs.pull-request-number }}';
+            const prUrl = '${{ steps.cpr.outputs.pull-request-url }}';
+            const response = JSON.parse(require('node:fs').readFileSync('.agent-output/response.json', 'utf8'));
+            const body = [
+              response.issue_comment || 'Agent created a pull request for this issue.',
+              '',
+              `PR: #${prNumber} (${prUrl})`
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              body
+            });
+
+      - name: Enable auto-merge
+        if: steps.agent.outputs.can_handle == 'true' && steps.cpr.outputs.pull-request-number != '' && env.ENABLE_AUTO_MERGE == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --auto --squash --repo "${{ github.repository }}"

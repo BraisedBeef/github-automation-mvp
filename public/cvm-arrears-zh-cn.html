@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>欠费说明</title>
+  </head>
+  <style>
+    p{
+      margin: 0;
+    }
+    body {
+      padding: 40px 120px;
+    }
+    .title-box {
+      text-indent: 0;
+      text-align: center;
+    }
+    .title-box span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+       /* font-weight: 500; */
+      font-size: 27px;
+      color: #000000;
+      line-height: 38px;
+      text-align: right;
+      font-style: normal;
+    }
+    /* nav区域 */
+    .nav-box {
+      margin-top: 40px;
+    }
+    .nav-box .nav span {
+      text-align: left;
+      font-style: normal;
+      color: #000000;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 26px;
+      font-family:
+        PingFangSC,
+        PingFang SC;
+    }
+    /* 小标题 */
+    .son-title {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .son-title span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 21px;
+       /* font-weight: 500; */
+      line-height: 30px;
+      text-indent: 0;
+    }
+    /* 内容区域 */
+    .content-box {
+      margin-top: 40px;
+    }
+    .content-box span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 21px;
+      line-height: 30px;
+      text-indent: 0;
+      text-align: center;
+    }
+    /* 内容标题 */
+    .content-title span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 21px;
+      line-height: 30px;
+      text-indent: 0;
+      text-align: center;
+    }
+    /* 内容文字 */
+    .content-txt span{
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 16px;
+      line-height: 30px;
+      text-indent: 0;
+    }
+  </style>
+  <body>
+    <!-- 标题 -->
+    <p class="title-box">
+      <span>欠费说明</span>
+    </p>
+    <!-- nav -->
+    <div class="nav-box">
+      <div class="nav">
+        <span
+          >本文列出了账户欠费和 EIP 绑定的云资源欠费两种场景的欠费说明。</span
+        >
+      </div>
+    </div>
+    <div class="content-box">
+        <p class="content-title">
+          <span>账户欠费</span>
+        </p>
+        <p class="content-txt"><span>根据公网网络费用的计费模式的不同，账户欠费规则如下所示：</span></p>
+    </div>
+    <!-- ********************************************* 列 *************************************************** -->
+    <div class="content-box">
+      <!-- 小标题 -->
+      <p class="content-title">
+        <span>包年包月计费</span>
+      </p>
+      <!-- 内容 -->
+      <p class="content-txt"><span>按带宽包年包月计费不受账号欠费的影响，只和资源本身到期时间有关：</span></p>
+      <p class="content-txt"><span>包年包月带宽在到期前7天开始，系统会陆续发送到期预警与续费提醒通知。若您在包年包月 EIP 到期前未续费，该 EIP 将会被释放。</span></p>
+    </div>
+    <!-- ********************************************* 列 *************************************************** -->
+    <div class="content-box">
+      <!-- 小标题 -->
+      <p class="content-title">
+        <span>按流量计费和按小时带宽计费</span>
+      </p>
+      <!-- 内容 -->
+      <p class="content-txt"><span>EIP 绑定状态/未绑定云资源的 EIP欠费时间大于1h停服且停止计费</span></p>
+      <p class="content-txt"><span>未绑定云资源的EIP 将被释放。</span></p>
+      <p class="content-txt"><span>绑定 CVM 的 EIP将被解绑并释放。</span></p>
+    </div>
+    <!-- ********************************************* 列 *************************************************** -->
+    <div class="content-box">
+      <p class="content-title">
+        <span>账户欠费</span>
+      </p>
+      <!-- 内容 -->
+      <p class="content-txt"><span>绑定的云资源欠费，EIP 将自动解绑，进入闲置收费状态。若您确定不再使用，请尽快前往控制台释放EIP。</span></p>
+    </div>
+  </body>
+</html>

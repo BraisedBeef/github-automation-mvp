@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="主账号" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="费用账单-账单查看-多维度汇总账单" transform="translate(-1096.000000, -486.000000)" fill="#FE4D4F" fill-rule="nonzero">
+            <g id="编组-15" transform="translate(241.000000, 354.000000)">
+                <g id="上涨-面" transform="translate(855.000000, 132.000000)">
+                    <rect id="矩形" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                    <polygon id="路径" fill-opacity="0" points="0 0 16 0 16 16 0 16"></polygon>
+                    <polygon id="路径" points="9.33332812 14.6666719 6.66667187 14.6666719 6.66667187 7.33332812 4 7.33332812 8 1.33332812 12 7.33332812 9.33332812 7.33332812"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

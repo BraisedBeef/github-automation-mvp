@@ -1,0 +1,30 @@
+name: Agent PR Merged
+
+on:
+  pull_request:
+    types:
+      - closed
+
+permissions:
+  issues: write
+
+jobs:
+  notify-linked-issue:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'agent/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Comment on linked issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+        run: node scripts/notify-pr-merged.mjs

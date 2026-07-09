@@ -1,0 +1,45 @@
+.transfer-table__container {
+  display: flex;
+  width: 100%;
+
+  .transfer-table__left,
+  .transfer-table__right {
+    flex: 1 1 0;
+    width: 0;
+  }
+
+  .transfer-table__left-tips,
+  .transfer-table__right-tips {
+    margin-bottom: 10px;
+  }
+
+  .transfer-table__left {
+    margin-right: 20px;
+  }
+}
+
+.transfer-table__input {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  padding: 1px 11px;
+  margin-bottom: 10px;
+  font-size: inherit;
+  font-size: var(--el-font-size-base);
+  line-height: var(--el-input-height);
+  color: var(--el-input-text-color, var(--el-text-color-regular));
+  vertical-align: middle;
+  appearance: none;
+  background: none;
+  border: #000;
+  border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+  outline: none;
+  box-shadow: 0 0 0 1px var(--el-input-border-color, var(--el-border-color)) inset;
+
+  --el-input-height: var(--el-component-size);
+}

@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "Vue.volar",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "stylelint.vscode-stylelint",
+    "editorconfig.editorconfig",
+
+    "antfu.iconify",
+    "miguelsolorio.fluent-icons",
+    "lokalise.i18n-ally",
+    "usernamehw.errorlens",
+    "eamodio.gitlens",
+    "naumovs.color-highlight",
+    "bradlc.vscode-tailwindcss"
+  ]
+}

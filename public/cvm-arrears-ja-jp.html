@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>延滞料金に関する説明</title>
+  </head>
+  <style>
+    p{
+      margin: 0;
+    }
+    body {
+      padding: 40px 120px;
+    }
+    .title-box {
+      text-indent: 0;
+      text-align: center;
+    }
+    .title-box span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+       /* font-weight: 500; */
+      font-size: 27px;
+      color: #000000;
+      line-height: 38px;
+      text-align: right;
+      font-style: normal;
+    }
+    /* nav区域 */
+    .nav-box {
+      margin-top: 40px;
+    }
+    .nav-box .nav span {
+      text-align: left;
+      font-style: normal;
+      color: #000000;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 26px;
+      font-family:
+        PingFangSC,
+        PingFang SC;
+    }
+    /* 小标题 */
+    .son-title {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .son-title span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 21px;
+       /* font-weight: 500; */
+      line-height: 30px;
+      text-indent: 0;
+    }
+    /* 内容区域 */
+    .content-box {
+      margin-top: 40px;
+    }
+    .content-box span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 21px;
+      line-height: 30px;
+      text-indent: 0;
+      text-align: center;
+    }
+    /* 内容标题 */
+    .content-title span {
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 21px;
+      line-height: 30px;
+      text-indent: 0;
+      text-align: center;
+    }
+    /* 内容文字 */
+    .content-txt span{
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-size: 16px;
+      line-height: 30px;
+      text-indent: 0;
+    }
+  </style>
+  <body>
+    <!-- 标题 -->
+    <p class="title-box">
+      <span>延滞料金に関する説明</span>
+    </p>
+    <!-- nav -->
+    <div class="nav-box">
+      <div class="nav">
+        <span
+          >本書では、アカウントの延滞料金と EIP に関連付けられたクラウドリソースの延滞料金に関する2つのシナリオを説明しています。</span
+        >
+      </div>
+    </div>
+    <div class="content-box">
+        <p class="content-title">
+          <span>アカウントの延滞料金</span>
+        </p>
+        <p class="content-txt"><span>パブリックネットワーク料金の課金モードに応じて、アカウント延滞ルールは以下のように異なります。</span></p>
+    </div>
+    <!-- ********************************************* 列 *************************************************** -->
+    <div class="content-box">
+      <!-- 小标题 -->
+      <p class="content-title">
+        <span>年額/月額サブスクリプション課金</span>
+      </p>
+      <!-- 内容 -->
+      <p class="content-txt"><span>年額または月額の帯域幅サブスクリプション課金はアカウントの延滞に影響されず、リソース自体の有効期限のみが関連します。</span></p>
+      <p class="content-txt"><span>年額/月額サブスクリプションの帯域幅の有効期限の7日前から、システムは順次、期限切れ警告と更新通知を送信します。サブスクリプションの EIP の有効期限前に更新を行わない場合、その EIP は解放されます。</span></p>
+    </div>
+    <!-- ********************************************* 列 *************************************************** -->
+    <div class="content-box">
+      <!-- 小标题 -->
+      <p class="content-title">
+        <span>従量制課金（トラフィックまたは時間ごとの帯域幅）</span>
+      </p>
+      <!-- 内容 -->
+      <p class="content-txt"><span>1時間以上延滞した場合（未関連付けまたは関連付け済みの EIP）サービスが停止され、課金が停止されます。</span></p>
+      <p class="content-txt"><span>未関連付けの EIP は解放されます。</span></p>
+      <p class="content-txt"><span>CVM に関連付けられた EIP は関連解除され、解放されます。</span></p>
+    </div>
+    <!-- ********************************************* 列 *************************************************** -->
+    <div class="content-box">
+      <p class="content-title">
+        <span>関連付けられたクラウドリソースの延滞料金</span>
+      </p>
+      <!-- 内容 -->
+      <p class="content-txt"><span>EIP に関連付けられたクラウドリソースが延滞料金状態になった場合、EIP は自動的に関連解除され、アイドル課金状態になります。使用しない場合は、早急にコンソールから EIP を解放してください。</span></p>
+    </div>
+  </body>
+</html>

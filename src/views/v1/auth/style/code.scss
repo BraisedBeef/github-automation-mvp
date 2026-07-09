@@ -1,0 +1,21 @@
+.code-wrap {
+  position: relative;
+
+  .el-form-item__content {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+
+    .el-input {
+      flex: 1;
+      flex-shrink: 0;
+    }
+  }
+
+  // 验证定位
+  .verifyCodeBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}

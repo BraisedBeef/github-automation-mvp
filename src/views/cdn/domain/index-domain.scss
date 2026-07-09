@@ -1,0 +1,33 @@
+.page-box {
+  padding: 20px;
+
+  .head {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--primary-text);
+  }
+
+  .tip {
+    font-size: 14px;
+    line-height: 1;
+    color: var(--sub-text);
+  }
+
+  .el-link.el-link--primary {
+    line-height: 1;
+  }
+
+  .label {
+    margin-right: 14px;
+  }
+}
+
+:deep(.el-dialog) {
+  .form-tip {
+    margin-top: 10px;
+    line-height: 20px !important;
+    color: #999;
+    word-break: break-all;
+  }
+}

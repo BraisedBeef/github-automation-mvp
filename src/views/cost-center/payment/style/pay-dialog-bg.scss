@@ -1,0 +1,9 @@
+.payDialogBg {
+  background-image: url('@/assets/images/cost-center/payment/pay-dialog-bg.png');
+  background-repeat: no-repeat;
+  background-position: bottom;
+
+  .el-dialog__body {
+    background-color: transparent;
+  }
+}

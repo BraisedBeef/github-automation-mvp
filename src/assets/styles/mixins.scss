@@ -1,0 +1,39 @@
+// flex布局 css: @include flex  传参: @include flex(space-between)
+@mixin flex($flex-type: center, $direct: row) {
+  display: flex;
+  flex-direction: $direct;
+  align-items: center;
+  justify-content: $flex-type;
+}
+
+// 文本超出隐藏
+@mixin text-over($line: 1) {
+  // 默认一行文本(默认值可以省略不传)
+  @if $line == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    // 多行文本
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: $line;
+  }
+}
+
+// 旋转动画
+@mixin rotate($deg: 360deg, $duration: 1s) {
+  animation: rotate $duration linear infinite;
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate($deg);
+    }
+  }
+}

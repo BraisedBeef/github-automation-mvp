@@ -1,0 +1,22 @@
+.copy-icon {
+  visibility: hidden;
+
+  &:hover {
+    color: var(--el-color-primary);
+    transition: all 0.3s;
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.el-table__cell:hover .copy-icon {
+  visibility: visible;
+}
+
+.oprate {
+  .el-button {
+    margin-left: 0 !important;
+  }
+}

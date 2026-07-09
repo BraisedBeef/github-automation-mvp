@@ -1,0 +1,77 @@
+<template>
+  <div style="width: 600px">
+    <!-- 多行多列 -->
+    <ItemList>
+      <!-- 第一行 -->
+      <div class="df jsb">
+        <Item>
+          <template #key> key-1 </template>
+          <template #value>
+            <div style="width: 100px; word-break: break-all" class="df">value-1</div>
+          </template>
+        </Item>
+
+        <Item>
+          <template #key> key-2 </template>
+          <template #value> value-2 </template>
+        </Item>
+
+        <Item>
+          <template #key> key-3 </template>
+          <template #value>
+            <div style="width: 80px; word-break: break-all" class="df">value-3333333333</div>
+          </template>
+        </Item>
+      </div>
+
+      <!-- 第二行 -->
+      <div class="df jsb">
+        <Item>
+          <template #key> key-4 </template>
+          <template #value> value-4 </template>
+        </Item>
+        <Item>
+          <template #key> key-5 </template>
+          <template #value> value-5 </template>
+        </Item>
+      </div>
+    </ItemList>
+
+    <!-- 单行多列 -->
+    <ItemList>
+      <Item>
+        <template #key> key-6 </template>
+        <template #value> <div style="width: 100px" class="df">value-6</div> </template>
+      </Item>
+      <Item>
+        <template #key> key-7 </template>
+        <template #value> value-7 </template>
+      </Item>
+    </ItemList>
+
+    <!-- 单行单列 -->
+    <ItemList>
+      <Item>
+        <template #key> key-1 </template>
+        <template #value> <div style="width: 100px" class="df">value-1</div> </template>
+      </Item>
+    </ItemList>
+
+  <!-- 多行单列 -->
+    <ItemList>
+      <Item>
+        <template #key> key-1 </template>
+        <template #value> <div style="width: 100px" class="df">value-1</div> </template>
+      </Item>
+
+      <Item>
+        <template #key> key-2 </template>
+        <template #value> <div style="width: 100px" class="df">value-2</div> </template>
+      </Item>
+    </ItemList>
+  </div>
+</template>
+
+<script setup lang="ts"></script>
+
+<style lang="scss" scoped></style>

@@ -1,0 +1,93 @@
+/* 样式初始化 */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+form,
+fieldset
+
+/*fieldset 元素可将表单内的相关元素分组*/
+,
+legend,
+input,
+button,
+textarea,
+p,
+blockquote,
+th,
+td {
+  padding: 0;
+  margin: 0;
+
+  /* outline （轮廓）是绘制于元素周围的一条线，位于边框边缘的外围，可起到突出元素的作用。 */
+  font: inherit;
+
+  /* inherit 关键字指定一个属性应从父元素继承它的值。 */
+  vertical-align: baseline;
+  outline: 0;
+
+  /* baseline 默认。元素放置在父元素的基线上。 */
+}
+
+div,
+ul,
+li,
+ol,
+a,
+section,
+nav,
+header,
+footer {
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+body {
+  min-width: 1210px;
+  font-family: 'PingFang SC', 'PingFang SC';
+  font-size: 14px;
+  font-weight: 400;
+  color: #555;
+}
+
+a {
+  text-decoration: none;
+}
+
+svg {
+  flex-shrink: 0;
+}
+
+img {
+  border: none;
+}
+
+ol,
+ul,
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+
+  /* 为表格设置合并边框模型 */
+}
+
+[pointer] {
+  cursor: pointer;
+}
