@@ -78,7 +78,11 @@ git push -u origin dev
 - `OPENAI_MODEL`
   - 建议直接填写完整模型名，例如 `gpt-5.4`
   - 如果填写 `5.4` 这类简写，当前脚本也会自动转换成 `gpt-5.4`
+- `OPENAI_WIRE_API`
+- `OPENAI_REASONING_EFFORT`
 - `OPENAI_ENDPOINT_PATH`
+- `OPENAI_DISABLE_RESPONSE_STORAGE`
+- `OPENAI_USER_AGENT`
 - `AGENT_VALIDATION_COMMAND`
 - `ENABLE_AUTO_MERGE`
 
@@ -87,7 +91,10 @@ git push -u origin dev
 ```text
 AGENT_BASE_BRANCH=dev
 OPENAI_MODEL=gpt-5.4
-OPENAI_ENDPOINT_PATH=/chat/completions
+OPENAI_WIRE_API=responses
+OPENAI_REASONING_EFFORT=medium
+OPENAI_ENDPOINT_PATH=
+OPENAI_DISABLE_RESPONSE_STORAGE=true
 AGENT_VALIDATION_COMMAND=echo "这里填你的 lint/build/test 命令"
 ENABLE_AUTO_MERGE=false
 ```
@@ -127,24 +134,34 @@ ENABLE_AUTO_MERGE=false
 AGENT_BASE_BRANCH=dev
 AGENT_DEMO_MODE=false
 OPENAI_MODEL=你的模型名（例如 `gpt-5.4`）
-OPENAI_ENDPOINT_PATH=/chat/completions
+OPENAI_WIRE_API=responses
+OPENAI_REASONING_EFFORT=medium
+OPENAI_ENDPOINT_PATH=
+OPENAI_DISABLE_RESPONSE_STORAGE=true
 AGENT_VALIDATION_COMMAND=echo "validation skipped"
 ```
 
 然后把下面两个值配成 GitHub Secrets：
 
-- `OPENAI_BASE_URL`：例如 `https://你的中转站地址/v1`
+- `OPENAI_BASE_URL`：例如 `https://你的中转站地址`
 - `OPENAI_API_KEY`：你的中转站密钥
 
 这样 GitHub Actions 会直接调用这个兼容接口，不再要求你先部署一个单独的 Agent 服务。
 
-如果你使用的是“地址本身就是最终接口，不需要再拼 `/chat/completions`”的中转站，那么把变量设置成：
+标准兼容方式下，脚本会优先尝试：
+
+- `/v1/responses`
+- `/responses`
+- `/v1/chat/completions`
+- `/chat/completions`
+
+如果你使用的是非标准网关，必须手动指定最终接口，那么把变量设置成：
 
 ```text
-OPENAI_ENDPOINT_PATH=
+OPENAI_ENDPOINT_PATH=/你的最终接口路径
 ```
 
-这样 workflow 就会直接请求 `OPENAI_BASE_URL` 本身。
+这样 workflow 就会只请求你指定的那一个路径。
 
 ## 如何在本地启动示例 Agent API
 

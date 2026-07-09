@@ -15,6 +15,10 @@ const openaiBaseUrl = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1
 const openaiApiKey = process.env.OPENAI_API_KEY || '';
 const openaiModel = normalizeModelName(process.env.OPENAI_MODEL || 'gpt-4.1');
 const openaiEndpointPath = process.env.OPENAI_ENDPOINT_PATH || '';
+const openaiWireApi = String(process.env.OPENAI_WIRE_API || 'responses').trim().toLowerCase();
+const openaiReasoningEffort = String(process.env.OPENAI_REASONING_EFFORT || '').trim().toLowerCase();
+const openaiDisableResponseStorage = String(process.env.OPENAI_DISABLE_RESPONSE_STORAGE || 'true') === 'true';
+const openaiUserAgent = process.env.OPENAI_USER_AGENT || '';
 
 function slugify(input) {
   return String(input || '')
@@ -113,7 +117,7 @@ async function callOpenAICompatibleModel(payload) {
     '如果需求不明确、风险过高、或者缺少必要上下文，请把 can_handle 设为 false，并解释原因。'
   ].join(' ');
 
-  const requestBody = {
+  const chatCompletionsRequestBody = {
     model: openaiModel,
     temperature: 0.2,
     response_format: { type: 'json_object' },
@@ -122,40 +126,54 @@ async function callOpenAICompatibleModel(payload) {
       { role: 'user', content: JSON.stringify(payload, null, 2) }
     ]
   };
+  if (openaiReasoningEffort) {
+    chatCompletionsRequestBody.reasoning_effort = openaiReasoningEffort;
+  }
 
-  const endpointCandidates = openaiEndpointPath
-    ? [`${openaiBaseUrl}${openaiEndpointPath.startsWith('/') ? openaiEndpointPath : `/${openaiEndpointPath}`}`]
-    : [
-        openaiBaseUrl,
-        `${openaiBaseUrl}/chat/completions`,
-        `${openaiBaseUrl}/responses`
-      ];
+  const responsesRequestBody = {
+    model: openaiModel,
+    input: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: JSON.stringify(payload, null, 2) }
+    ],
+    text: {
+      format: {
+        type: 'json_object'
+      }
+    },
+    store: !openaiDisableResponseStorage
+  };
+  if (openaiReasoningEffort) {
+    responsesRequestBody.reasoning = {
+      effort: openaiReasoningEffort
+    };
+  }
+
+  const endpointCandidates = buildEndpointCandidates();
 
   let lastError;
 
-  for (const requestUrl of endpointCandidates) {
+  for (const candidate of endpointCandidates) {
+    const requestUrl = candidate.url;
     try {
       console.log(`尝试模型接口地址：${requestUrl}`);
 
+      const headers = {
+        Authorization: `Bearer ${openaiApiKey}`,
+        'Content-Type': 'application/json'
+      };
+      if (openaiUserAgent) {
+        headers['User-Agent'] = openaiUserAgent;
+      }
+
       const response = await requestWithRetry(requestUrl, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${openaiApiKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestUrl.endsWith('/responses')
-          ? {
-              model: openaiModel,
-              input: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: JSON.stringify(payload, null, 2) }
-              ]
-            }
-          : requestBody)
+        headers,
+        body: JSON.stringify(candidate.kind === 'responses' ? responsesRequestBody : chatCompletionsRequestBody)
       });
 
       const data = await response.json();
-      const content = requestUrl.endsWith('/responses')
+      const content = candidate.kind === 'responses'
         ? extractResponsesText(data)
         : data.choices?.[0]?.message?.content;
 
@@ -171,6 +189,47 @@ async function callOpenAICompatibleModel(payload) {
   }
 
   throw lastError || new Error('所有模型接口地址都调用失败');
+}
+
+function buildEndpointCandidates() {
+  if (openaiEndpointPath) {
+    const normalizedPath = openaiEndpointPath.startsWith('/')
+      ? openaiEndpointPath
+      : `/${openaiEndpointPath}`;
+    return [
+      {
+        url: `${openaiBaseUrl}${normalizedPath}`,
+        kind: normalizedPath.includes('responses') ? 'responses' : 'chat.completions'
+      }
+    ];
+  }
+
+  const candidates = openaiWireApi === 'chat_completions' || openaiWireApi === 'chat/completions'
+    ? [
+        { url: `${openaiBaseUrl}/v1/chat/completions`, kind: 'chat.completions' },
+        { url: `${openaiBaseUrl}/chat/completions`, kind: 'chat.completions' },
+        { url: `${openaiBaseUrl}/v1/responses`, kind: 'responses' },
+        { url: `${openaiBaseUrl}/responses`, kind: 'responses' }
+      ]
+    : [
+        { url: `${openaiBaseUrl}/v1/responses`, kind: 'responses' },
+        { url: `${openaiBaseUrl}/responses`, kind: 'responses' },
+        { url: `${openaiBaseUrl}/v1/chat/completions`, kind: 'chat.completions' },
+        { url: `${openaiBaseUrl}/chat/completions`, kind: 'chat.completions' }
+      ];
+
+  return uniqueCandidates(candidates);
+}
+
+function uniqueCandidates(candidates) {
+  const seen = new Set();
+  return candidates.filter(candidate => {
+    if (seen.has(candidate.url)) {
+      return false;
+    }
+    seen.add(candidate.url);
+    return true;
+  });
 }
 
 function extractResponsesText(data) {
