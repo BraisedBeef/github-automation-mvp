@@ -1,20 +1,20 @@
 # GitHub Actions + Agent API MVP
 
-## What this MVP does
+## 这套 MVP 能做什么
 
-When an issue has the `agent` label, GitHub Actions will:
+当一个 Issue 带上 `agent` 标签后，GitHub Actions 会自动执行下面这条链路：
 
-1. Check out the repository
-2. Build a compact issue context payload
-3. Call your external Agent API, or generate a built-in demo result
-4. Apply the returned patch
-5. Optionally run a validation command
-6. Open a pull request
-7. Comment back on the issue
+1. 检出仓库代码
+2. 生成精简的 Issue 上下文
+3. 调用外部 Agent API，或者直接生成内置演示结果
+4. 应用返回的补丁
+5. 按需执行校验命令
+6. 自动创建拉取请求
+7. 在 Issue 下自动回帖
 
-If the PR body contains `Closes #<issue-number>`, GitHub will close the issue automatically after merge. A second workflow comments on the issue once the agent PR is merged.
+如果 PR 正文里包含 `Closes #<issue-number>`，那么合并之后 GitHub 会自动关闭对应的 Issue。另一个 workflow 还会在 PR 合并后，再回帖通知 Issue。
 
-## Files added by this MVP
+## 这套 MVP 新增了哪些文件
 
 - `.github/workflows/issue-agent.yml`
 - `.github/workflows/agent-pr-merged.yml`
@@ -24,31 +24,31 @@ If the PR body contains `Closes #<issue-number>`, GitHub will close the issue au
 - `scripts/render-workflow-summary.mjs`
 - `scripts/notify-pr-merged.mjs`
 
-## Repository configuration
+## 仓库配置
 
 ### GitHub Secrets
 
-Set these repository secrets when you are using a real external Agent API:
+只有在你要接入真实外部 Agent API 时，才需要配置下面两个 Secret：
 
 - `AGENT_API_URL`
 - `AGENT_API_TOKEN`
 
 ### GitHub Variables
 
-Optional repository variables:
+可选变量如下：
 
 - `AGENT_DEMO_MODE`
 - `AGENT_VALIDATION_COMMAND`
 - `ENABLE_AUTO_MERGE`
 
-Examples:
+示例：
 
 ```text
-AGENT_VALIDATION_COMMAND=echo "Add your lint/build/test command here"
+AGENT_VALIDATION_COMMAND=echo "这里填你的 lint/build/test 命令"
 ENABLE_AUTO_MERGE=false
 ```
 
-Example demo-first setup:
+推荐的演示模式配置：
 
 ```text
 AGENT_DEMO_MODE=true
@@ -56,9 +56,9 @@ AGENT_VALIDATION_COMMAND=echo "validation skipped"
 ENABLE_AUTO_MERGE=false
 ```
 
-When `AGENT_DEMO_MODE=true`, the workflow does not require `AGENT_API_URL` or `AGENT_API_TOKEN`. It generates a demo patch directly inside GitHub Actions so you can verify labels, branching, PR creation, and issue comments without exposing a local service.
+当 `AGENT_DEMO_MODE=true` 时，workflow 不依赖 `AGENT_API_URL` 或 `AGENT_API_TOKEN`，而是直接在 GitHub Actions 内部生成一份演示补丁。这样你不用暴露本地服务，也能验证标签触发、自动建分支、自动建 PR 和自动回帖这条链路。
 
-## Starting the example Agent API locally
+## 如何在本地启动示例 Agent API
 
 ```bash
 cd agent-service
@@ -66,24 +66,24 @@ cp .env.example .env
 node src/server.mjs
 ```
 
-The default service listens on `http://127.0.0.1:8787`.
+默认服务地址是 `http://127.0.0.1:8787`。
 
-### Demo mode
+### 演示模式说明
 
-If you set `AGENT_DEMO_MODE=true`, the service will not call a model. It will create a new markdown file under `docs/agent-runs/` so you can verify the full issue-to-PR path safely.
+如果你把 `AGENT_DEMO_MODE=true` 配到本地服务里，那么服务不会调用模型，而是会在 `docs/agent-runs/` 下创建一份 markdown 记录文件，用来证明整个 Issue -> PR 流程已经打通。
 
-## Recommended first test
+## 推荐的第一次测试方式
 
-1. For the simplest test, set `AGENT_DEMO_MODE=true`
-2. Create a small issue
-3. Add the `agent` label
-4. Watch the workflow open a PR
-5. Only after that, switch to a real hosted Agent API if you want model-driven fixes
+1. 先把 `AGENT_DEMO_MODE=true` 打开
+2. 创建一个测试 Issue
+3. 给这个 Issue 打上 `agent` 标签
+4. 观察 workflow 是否自动创建 PR
+5. 确认流程跑通后，再切换到真实托管的 Agent API
 
-## Production hardening ideas
+## 生产环境建议
 
-- Restrict writable paths inside the Agent API prompt
-- Reject issues with labels like `security`, `infra`, or `migration`
-- Require human review before merge
-- Replace demo validation with real project checks
-- Add audit logs and retry handling
+- 在 Agent API 的提示词里限制允许修改的路径
+- 对 `security`、`infra`、`migration` 等高风险标签直接拒绝自动处理
+- 合并前保留人工审核
+- 用真实的 lint / build / test 命令替换演示校验
+- 为每次自动处理增加审计日志和重试机制

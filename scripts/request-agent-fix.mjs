@@ -23,11 +23,11 @@ function slugify(input) {
 function buildDemoPatch(issueNumber, issueTitle) {
   const filePath = `docs/agent-runs/issue-${issueNumber}.md`;
   const contentLines = [
-    `# Agent Demo Run for Issue #${issueNumber}`,
+    `# Issue #${issueNumber} 的 Agent 演示记录`,
     '',
-    `Title: ${issueTitle}`,
+    `标题：${issueTitle}`,
     '',
-    'This file was created by the GitHub Actions demo mode to prove that the issue-to-PR workflow is wired correctly.'
+    '这个文件由 GitHub Actions 的演示模式自动创建，用来验证从 Issue 到拉取请求的自动处理链路已经连通。'
   ];
 
   return [
@@ -48,12 +48,12 @@ function buildDemoResponse(payload) {
 
   return {
     can_handle: true,
-    summary: 'GitHub Actions demo mode is enabled, so the workflow created a trace file instead of editing application code.',
+    summary: '当前启用了 GitHub Actions 演示模式，因此这次流程创建的是演示记录文件，而不是真实修改业务代码。',
     branch_name: `agent/issue-${issueNumber}-${slugify(issueTitle)}`,
-    commit_message: `chore: demo agent run for issue #${issueNumber}`,
-    pr_title: `chore: demo agent run for issue #${issueNumber}`,
-    pr_body: `GitHub Actions demo mode is enabled, so the workflow created a trace file instead of editing application code.\n\nCloses #${issueNumber}`,
-    issue_comment: `Demo mode created a verification PR for issue #${issueNumber}.`,
+    commit_message: `chore: 演示 issue #${issueNumber} 的 agent 流程`,
+    pr_title: `chore: 演示 issue #${issueNumber} 的 agent 流程`,
+    pr_body: `当前启用了 GitHub Actions 演示模式，因此这次流程创建的是演示记录文件，而不是真实修改业务代码。\n\nCloses #${issueNumber}`,
+    issue_comment: `演示模式已经为 issue #${issueNumber} 创建了一条验证用的拉取请求。`,
     patch: buildDemoPatch(issueNumber, issueTitle)
   };
 }
@@ -87,7 +87,7 @@ async function requestWithRetry(url, options, retries = 4) {
     }
 
     const delayMs = attempt * 3000;
-    console.warn(`Agent API attempt ${attempt} failed, retrying in ${delayMs}ms...`);
+    console.warn(`Agent API 第 ${attempt} 次请求失败，将在 ${delayMs}ms 后重试...`);
     await sleep(delayMs);
   }
 
@@ -138,4 +138,4 @@ if (process.env.GITHUB_OUTPUT) {
   writeFileSync(process.env.GITHUB_OUTPUT, `${outputLines.join('\n')}\n`, { flag: 'a' });
 }
 
-console.log(`Agent API responded with can_handle=${Boolean(result.can_handle)}.`);
+console.log(`Agent 结果已生成，can_handle=${Boolean(result.can_handle)}。`);

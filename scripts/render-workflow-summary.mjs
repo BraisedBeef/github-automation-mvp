@@ -5,21 +5,21 @@ import process from 'node:process';
 const responsePath = path.join(process.cwd(), '.agent-output', 'response.json');
 
 if (!existsSync(responsePath)) {
-  console.log('No agent response found, skipping summary render.');
+  console.log('未找到 Agent 响应文件，跳过摘要渲染。');
   process.exit(0);
 }
 
 const response = JSON.parse(readFileSync(responsePath, 'utf8'));
 const lines = [
-  '## Agent Result',
+  '## Agent 结果摘要',
   '',
   `- can_handle: ${Boolean(response.can_handle)}`,
-  `- branch_name: ${response.branch_name || '(empty)'}`,
-  `- commit_message: ${response.commit_message || '(empty)'}`,
+  `- branch_name: ${response.branch_name || '（空）'}`,
+  `- commit_message: ${response.commit_message || '（空）'}`,
   '',
-  '### Summary',
+  '### 处理说明',
   '',
-  response.summary || 'No summary returned.',
+  response.summary || '没有返回处理说明。',
   ''
 ];
 

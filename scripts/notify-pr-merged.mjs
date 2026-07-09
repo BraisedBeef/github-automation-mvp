@@ -7,20 +7,20 @@ const pullRequest = event.pull_request;
 const repo = process.env.GITHUB_REPOSITORY;
 
 if (!pullRequest || !repo) {
-  throw new Error('Missing pull request event context');
+  throw new Error('缺少拉取请求事件上下文');
 }
 
 const match = String(pullRequest.body || '').match(/Closes\s+#(\d+)/i);
 if (!match) {
-  console.log('No linked issue found in PR body.');
+  console.log('没有在 PR 正文中找到关联的 Issue。');
   process.exit(0);
 }
 
 const issueNumber = match[1];
 const commentBody = [
-  `Agent pull request #${pullRequest.number} has been merged into \`${pullRequest.base.ref}\`.`,
+  `Agent 拉取请求 #${pullRequest.number} 已经合并到 \`${pullRequest.base.ref}\`。`,
   '',
-  `Merged PR: ${pullRequest.html_url}`
+  `已合并的拉取请求：${pullRequest.html_url}`
 ].join('\n');
 
 execFileSync(

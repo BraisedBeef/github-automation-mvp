@@ -54,11 +54,11 @@ jobs:
             const response = JSON.parse(fs.readFileSync('.agent-output/response.json', 'utf8'));
             const issue_number = context.payload.issue.number;
             const body = [
-              'Agent did not open a pull request for this issue.',
+              'Agent 没有为这个 Issue 自动创建拉取请求。',
               '',
-              response.summary || 'No summary was returned by the Agent API.',
+              response.summary || 'Agent API 没有返回处理说明。',
               '',
-              'Tip: add more reproduction details or narrow the scope before retrying.'
+              '建议：补充更明确的复现步骤，或缩小问题范围后再重试。'
             ].join('\n');
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -121,9 +121,9 @@ jobs:
             const prUrl = '${{ steps.cpr.outputs.pull-request-url }}';
             const response = JSON.parse(require('node:fs').readFileSync('.agent-output/response.json', 'utf8'));
             const body = [
-              response.issue_comment || 'Agent created a pull request for this issue.',
+              response.issue_comment || 'Agent 已经为这个 Issue 创建了拉取请求。',
               '',
-              `PR: #${prNumber} (${prUrl})`
+              `拉取请求：#${prNumber} (${prUrl})`
             ].join('\n');
             await github.rest.issues.createComment({
               owner: context.repo.owner,
